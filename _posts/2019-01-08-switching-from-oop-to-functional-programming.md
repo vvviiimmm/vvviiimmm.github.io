@@ -1,6 +1,9 @@
+---
+title: "Switching from OOP to Functional Programming"
+excerpt: "Why functional programming is so hard?"
+author_profile: false
+---
 # Switching from OOP to Functional Programming
-
-Why functional programming is so hard?
 
 ![](https://cdn-images-1.medium.com/max/2000/1*W8fpVDNFk2Rr_xuShYATJw.jpeg)
 
