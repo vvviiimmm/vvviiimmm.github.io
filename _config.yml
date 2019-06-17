@@ -108,16 +108,18 @@ author:
   location         : "Living on the road."
   email            :
   links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/vvviiimmm"
+    - label: "Linkedin"
+      icon: "fab fa-fw fa-linkedin-square"
+      url: "https://www.linkedin.com/in/alexeyavramenko/"
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:alexey.awramenko@gmail.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/vvviiimmm"
-
 # Site Footer
 footer:
   links:
@@ -228,6 +230,12 @@ whitelist:
   - jekyll-feed
   - jemoji
   - jekyll-include-cache
+
+links:
+  - title: About
+    url: /about/
+  - title: Articles
+    url: /articles/
 
 
 # Archives
