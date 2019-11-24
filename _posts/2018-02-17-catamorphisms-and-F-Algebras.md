@@ -1,5 +1,3 @@
-# Catamorphisms and F-Algebras
-
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/cata/header.png){: .align-center}
 
 > So I often hear the words “catamorphism” and “recursion schemes”. What is that about?
