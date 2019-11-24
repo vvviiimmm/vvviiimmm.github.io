@@ -76,6 +76,7 @@ def notReallyCata(evaluator: (Expression) => Int, expr: Expression): Int = evalu
 ```
 
 > 🤨, but what’s the point? You just applying an argument to a function?
+{: .notice}
 
 That’s because it’s `notReallyCata`. The real `cata` function is generic and does not depend on any particular data structure or evaluator function. See, creation of a recursive data structure and then folding over it is a common pattern that `cata` tries to generalize.
 > Ok, then how the real cata looks like?
@@ -86,7 +87,9 @@ newtype Mu f = InF { outF :: f (Mu f) }
 cata :: Functor f => Algebra f a -> Mu f -> a 
 cata f = f . fmap (cata f) . outF
 ```
+
 > 🤯
+{: .notice}
 
 That’s why we started with `notReallyCata`. We’ll break down the implementation later until it clicks. But now let’s continue with our `Expression` example. First, we need to get rid of recursion by introducing a type parameter:
 
@@ -107,6 +110,7 @@ case class MultF[A](e1: A, e2: A) extends ExpressionF[A]
 All references to `Expression` are replaced with `a` type parameter so the data structure is no longer recursive.
 
 > Why is there an `F` at the end of type constructors?
+{: .notice}
 
 Glad you asked — that’s a hint that `ExpressionF` can be a `Functor`:
 
@@ -130,7 +134,9 @@ implicit object ExpressionFunctor extends Functor[ExpressionF] {
 ```
 
 Nothing fancy, just applying some function to the wrapped value preserving stucture.
+
 > Not sure why we need that 🤔
+{: .notice}
 
 It doesn’t makes sense now but it will a bit later. Now, the way we create our expression haven’t changed (except for constructor names):
 
@@ -237,6 +243,7 @@ def evalExprF2(e: ExpressionF[ExpressionF[Int]]): Int = e match {
 ```
 
 > Looks kinda ad hoc, what if you have deeply nested expressions?
+{: .notice}
 
 Yes, for arbitrary nested expression this approach is not scalable — each additional nesting level requires you to write specialized function.
 
@@ -252,7 +259,9 @@ unfix (Fx x) = x
 ```scala
 final case class Fix[F[_]](unFix: F[Fix[F]])
 ```
+
 > Fix? Looks like a recursive data structure that doesn’t do much. How is it useful?
+{: .notice}
 
 Let’s first look at the expression before the equals sign: indeed `Fix` is a recursive data structure that has one type parameter `f`. This parameter has kind `* -> *` e.g. it also takes a type parameter. For example, you can’t construct Fix providing Int or Bool, it has to be something like `Maybe`, `List` or… `ExpressionF`. This is why we introduced type parameter for `ExpressionF`. Next, after the equals sign we have a single type constructor `Fx` taking a single argument of type `f (Fix f)` which is basically an expression that constructs `f`'s value. In case of `Maybe` it would be `Maybe (Fix Maybe)` and then the whole thing is wrapped with `Fx` into type `Fix Maybe`.
 
@@ -290,7 +299,9 @@ val fixedExprF: Fix[ExpressionF] =
 ```
 
 The resulting type of a ‘fixed’ version is `Fix ExpressionF` so we’re back to a recursive representation, but now we have to use `unfix` function to get our non recursive data structure back.
+
 > What are the benefits of having `Fix`? Looks like it’s the same approach as original `Expression` type but now we have this weird `Fix` and `unfix` nonsense?
+{: .notice}
 
 Yes, but we’re trying to generalize the process of folding, it requires introduction of additional abstractions, like `Fix` and `Algebra` that we’ll discuss later. Bear with me, it should make more sense later.
 
@@ -523,6 +534,7 @@ val algebra2: Algebra[ExpressionF, Boolean] = {
 ```
 
 > That’s just different evaluators that can be passed into `cata`, right?
+{: .notice}
 
 Yes, we’re picking different carrier types and choosing our implementation. But there the trick — there is a mother of all evaluators that we can create by picking our carrier type to be… `Fix ExprF`.
 
@@ -542,6 +554,7 @@ final case class Fix[F[_]](unFix: F[Fix[F]])
 val initialAlgebra: Algebra[ExpressionF, Fix[ExpressionF]] = ???
 ```
 > Evaluating to `Int` or `Bool` totally makes sense but what would this `initialAlgebra` evaluate? When do I need to have `Fix` of something as a result of my evaluator?
+{: .notice}
 
 Of course you won’t write something like that yourself, just want to show you the deeper meaning behind f-algebras and cata. In fact, we already have an implementation for such evaluator and thats exactly `Fx` constructor:
 
@@ -555,13 +568,16 @@ val initialAlgebra: Algebra[ExpressionF, Fix[ExpressionF]] = Fix[ExpressionF]
 ```
 
 > Wait, `Fx` is an evaluator? That’s crazy.
+{: .notice}
 
 Yes and it does the most simple thing you can do — save the expession into a data structure. While all other evaluators (`algebra0`, `algebra1`) produced some value by reducing the expression (like doing sum or concatenation) Fx just wraps the expression without loosing any data.
 
 This is why we introduced `Fix` in the first place — you first evaluate your original data structure with `Fx` into initial algebra `Fix f` and then using `cata` the ‘real’ evaluation happens by fmaping your concrete evaluator over inital algebra.
 
 From category theory point of view, all algebras based on the same endo-functor form a category. This category has an initial object which is our initial algebra created by picking the carrier type as `Fix f`. There are some great blog posts by Bartosz Milewski that I highly recommend checking out if you want to get deep categorical understanding.
+
 > It’s still pretty hard to comprehend, I don’t think I fully understand the concept
+{: .notice}
 
 It’s always better to do hands on: try re-implementing `Fix` and `cata` on your own, think about possible data structures and algebras. For example, a `String` can be represented recursively (as a `Char` head and tail of `String`), the length of a string can be computed with `cata`. Here’s some great resources for further reading:
 
