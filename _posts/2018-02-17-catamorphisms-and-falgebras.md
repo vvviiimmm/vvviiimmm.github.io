@@ -1,9 +1,12 @@
 # Catamorphisms and F-Algebras
 
 > So I often hear the words “catamorphism” and “recursion schemes”. What is that about?
+{: .notice}
 
 Catamorphisms (or **cata**) are generalizations of the concept of a fold in functional programming. Given an F-Algebra and a recursive data structure a catamorphism will produce a value by recursively evaluating your data structure.
+
 > What is an F-Algebra? Maybe you can show some code examples first?
+{: .notice}
 
 The setup is not that straightforward so let’s start simple. Let’s say you have the following data structure to represent an expression:
 
