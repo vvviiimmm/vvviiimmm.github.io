@@ -3,4 +3,4 @@ permalink: /about/
 title: "About"
 ---
 
-Hello!
+Add more info and link to CV

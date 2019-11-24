@@ -18,7 +18,7 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 locale                   : "en-US"
 title                    : "Scala, Haskell and all things FP"
 title_separator          : "-"
-name                     : "Alexey Avramenko"
+name                     : "Oleksii Avramenko"
 description              : "An amazing website."
 url                      : "https://vvviiimmm.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
@@ -102,7 +102,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Alexey Avramenko"
+  name             : "Oleksii Avramenko"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I do things."
   location         : "Living on the road."
