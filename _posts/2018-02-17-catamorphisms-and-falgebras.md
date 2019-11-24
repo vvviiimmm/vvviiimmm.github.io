@@ -63,7 +63,7 @@ def notReallyCata(evaluator: (Expression) => Int, expr: Expression): Int = evalu
 
 > 🤨, but what’s the point? You just applying an argument to a function?
 
-That’s because it’s notReallyCata. The real cata function is generic and does not depend on any particular data structure or evaluator function. See, creation of a recursive data structure and then folding over it is a common pattern that cata tries to generalize.
+That’s because it’s `notReallyCata`. The real `cata` function is generic and does not depend on any particular data structure or evaluator function. See, creation of a recursive data structure and then folding over it is a common pattern that `cata` tries to generalize.
 > Ok, then how the real cata looks like?
 
 ```haskell
@@ -74,7 +74,7 @@ cata f = f . fmap (cata f) . outF
 ```
 > 🤯
 
-That’s why we started with notReallyCata. We’ll break down the implementation later until it clicks. But now let’s continue with our Expression example. First, we need to get rid of recursion by introducing a type parameter:
+That’s why we started with `notReallyCata`. We’ll break down the implementation later until it clicks. But now let’s continue with our `Expression` example. First, we need to get rid of recursion by introducing a type parameter:
 
 ```haskell
 data ExpressionF a = ValueF Int
@@ -90,10 +90,11 @@ case class AddF[A](e1: A, e2: A) extends ExpressionF[A]
 case class MultF[A](e1: A, e2: A) extends ExpressionF[A]
 ```
 
-All references to Expression are replaced with a type parameter so the data structure is no longer recursive.
-> Why is there an F at the end of type constructors?
+All references to `Expression` are replaced with `a` type parameter so the data structure is no longer recursive.
 
-Glad you asked — that’s a hint that ExpressionF can be a Functor:
+> Why is there an `F` at the end of type constructors?
+
+Glad you asked — that’s a hint that `ExpressionF` can be a `Functor`:
 
 ```haskell
 instance Functor ExpressionF where
@@ -144,7 +145,7 @@ val expr:  Expression                                 = Mult (Add (Value(1),  Va
 val exprF: ExpressionF[ExpressionF[ExpressionF[Int]]] = MultF(AddF(ValueF(1), ValueF(2)), ValueF(3))
 ```
 
-`expr` collapses everything into a single `Expression` while `exprF` encodes information about the nesting level of our expression tree. Speaking about evaluation, this is how we can go about implementing eval for ExpressionF:
+`expr` collapses everything into a single `Expression` while `exprF` encodes information about the nesting level of our expression tree. Speaking about evaluation, this is how we can go about implementing eval for `ExpressionF`:
 
 ```haskell
 evalExprF :: ExpressionF Int -> Int
@@ -161,7 +162,7 @@ def evalExprF(e: ExpressionF[Int]): Int = e match {
 }
 ```
 
-The main difference with original evalExpr is that we don’t have recursive call to evalExprF (ExpressionF is not recursive, remember?). It also means that our evaluator can work only with a **single level** expression:
+The main difference with original `evalExpr` is that we don’t have recursive call to `evalExprF` (`ExpressionF` is not recursive, remember?). It also means that our evaluator can work only with a **single level** expression:
 
 ```haskell
 fourtyTwo = evalExprF (ValueF 42)
@@ -188,7 +189,7 @@ val nestedExpr: ExpressionF[ExpressionF[Int]] = AddF(ValueF(2), ValueF(3))
 val wontCompile = evalExprF(nestedExpr)
 ```
 
-Simply because exprF expepects ExpressionF Int and we’re shoving ExpressionF (ExpressionF Int).
+Simply because `exprF` expepects `ExpressionF` Int and we’re shoving `ExpressionF (ExpressionF Int)`.
 
 To make it work we could define another evaluator:
 
@@ -239,11 +240,11 @@ final case class Fix[F[_]](unFix: F[Fix[F]])
 ```
 > Fix? Looks like a recursive data structure that doesn’t do much. How is it useful?
 
-Let’s first look at the expression before the equals sign: indeed Fix is a recursive data structure that has one type parameter f. This parameter has kind * -> * e.g. it also takes a type parameter. For example, you can’t construct Fix providing Int or Bool, it has to be something like Maybe, List or… ExpressionF. This is why we introduced type parameter for ExpressionF. Next, after the equals sign we have a single type constructor Fx taking a single argument of type f (Fix f) which is basically an expression that constructs f's value. In case of Maybe it would be Maybe (Fix Maybe) and then the whole thing is wrapped with Fx into type Fix Maybe.
+Let’s first look at the expression before the equals sign: indeed `Fix` is a recursive data structure that has one type parameter `f`. This parameter has kind `* -> *` e.g. it also takes a type parameter. For example, you can’t construct Fix providing Int or Bool, it has to be something like `Maybe`, `List` or… `ExpressionF`. This is why we introduced type parameter for `ExpressionF`. Next, after the equals sign we have a single type constructor `Fx` taking a single argument of type `f (Fix f)` which is basically an expression that constructs `f`'s value. In case of `Maybe` it would be `Maybe (Fix Maybe)` and then the whole thing is wrapped with `Fx` into type `Fix Maybe`.
 
-The type signature is confusing to read at first because of type constructor can have the same name as the type itself plus self referencing. But there is not much more to it than just wrapping a higher order type into a data structure. Btw, unfix is an opposite to Fx and all it does is pattern matching on Fx and returns wrapped value, no big deal.
+The type signature is confusing to read at first because of type constructor can have the same name as the type itself plus self referencing. But there is not much more to it than just wrapping a higher order type into a data structure. Btw, `unfix` is an opposite to `Fx` and all it does is pattern matching on `Fx` and returns wrapped value, no big deal.
 
-Now, we will replace every ExpressionF of our expression tree with Fix ExpressionF. Notice the difference in constructing expressions with and without Fx — they’re basically the same, except we need to prepend Fx $:
+Now, we will replace every `ExpressionF` of our expression tree with `Fix ExpressionF`. Notice the difference in constructing expressions with and without `Fx` — they’re basically the same, except we need to prepend `Fx $`:
 
 ```haskell
 -- (1 + 2) * (3 + 4)
@@ -274,10 +275,10 @@ val fixedExprF: Fix[ExpressionF] =
       Fix(ValueF(2))))))
 ```
 
-The resulting type of a ‘fixed’ version is Fix ExpressionF so we’re back to a recursive representation, but now we have to use unfix function to get our non recursive data structure back.
-> What are the benefits of having Fix? Looks like it’s the same approach as original Expression type but now we have this weird Fix and unfix nonsense?
+The resulting type of a ‘fixed’ version is `Fix ExpressionF` so we’re back to a recursive representation, but now we have to use `unfix` function to get our non recursive data structure back.
+> What are the benefits of having `Fix`? Looks like it’s the same approach as original `Expression` type but now we have this weird `Fix` and `unfix` nonsense?
 
-Yes, but we’re trying to generalize the process of folding, it requires introduction of additional abstractions, like Fix and Algebra that we’ll discuss later. Bear with me, it should make more sense later.
+Yes, but we’re trying to generalize the process of folding, it requires introduction of additional abstractions, like `Fix` and `Algebra` that we’ll discuss later. Bear with me, it should make more sense later.
 
 So we have our ‘fixed’ data structure, how would evaluation function look like?
 
@@ -290,7 +291,7 @@ evalFixedExprF fixedExpr = ???
 def evalFixedExprF(e: Fix[ExpressionF]): Int = ???
 ```
 
-Given a Fix ExpressionF the only thing we can do with it is calling unfix which produces ExpressionF (Fix ExpressionF):
+Given a `Fix ExpressionF` the only thing we can do with it is calling `unfix` which produces `ExpressionF (Fix ExpressionF)`:
 
 ```haskell
 evalFixedExprF :: Fix ExpressionF -> Int
@@ -301,7 +302,7 @@ evalFixedExprF fixedExpr = unfix fixedExpr ?? and something
 def evalFixedExprF(e: Fix[ExpressionF]): Int = e.unFix ???
 ```
 
-The returned ExpressionF can be one of our ValueF, AddF or MultF having a Fix ExpressionF as their type parameter. It makes sense to do pattern matching and decide what to do next:
+The returned `ExpressionF` can be one of our `ValueF`, `AddF` or `MultF` having a `Fix ExpressionF` as their type parameter. It makes sense to do pattern matching and decide what to do next:
 
 ```haskell
 evalFixedExprF :: Fix ExpressionF -> Int
@@ -332,9 +333,9 @@ def evalExpr(expr: Expression): Int = expr match {
 }
 ```
 
-Yes, it looks the same as our very first recursive evaluator for Expression with addition of having to unwrap the expression with unfix. So why bother with Fix anyway?
+Yes, it looks the same as our very first recursive evaluator for `Expression` with addition of having to unwrap the expression with `unfix`. So why bother with `Fix` anyway?
 
-Here’s the key: we will re-use our original ‘fix-less’ evaluator for ExpressionF and somehow distribute it over the Fix ExpressionF stucture. So this should be a function taking two arguments — the evaluator and the structure to evaluate:
+Here’s the key: we will re-use our original ‘fix-less’ evaluator for `ExpressionF` and somehow distribute it over the `Fix ExpressionF` stucture. So this should be a function taking two arguments — the evaluator and the structure to evaluate:
 
 ```haskell
 almostCata :: (ExpressionF Int -> Int) -> Fix ExpressionF -> Int
@@ -345,7 +346,7 @@ almostCata evaluator expr = undefined
 def almostCata(evaluator: (ExpressionF[Int] => Int), e: Fix[ExpressionF]): Int = ???
 ```
 
-Let’s try figure out the implementation — the first logical thing to do is to use unfix to get ExpressionF and then maybe pass it to evaluator:
+Let’s try figure out the implementation — the first logical thing to do is to use `unfix` to get `ExpressionF` and then maybe pass it to `evaluator`:
 
 ```haskell
 almostCata :: (ExpressionF Int -> Int) -> Fix ExpressionF -> Int
@@ -357,7 +358,7 @@ def almostCata(evaluator: (ExpressionF[Int] => Int), e: Fix[ExpressionF]): Int =
   evaluator(e.unFix) // won't compile
 ```
 
-Obviously this doesn’t work, evaluator expects ExpressionF Int and not ExpressionF (Fix ExpressionF). By the way, remember that ExpressionF is a Functor? This is where it gets handy — we can use fmap to apply the same process to the inner level of our expression tree:
+Obviously this doesn’t work, `evaluator` expects `ExpressionF Int` and not `ExpressionF (Fix ExpressionF)`. By the way, remember that `ExpressionF` is a `Functor`? This is where it gets handy — we can use `fmap` to apply the same process to the inner level of our expression tree:
 
 ```haskell
 almostCata :: (ExpressionF Int -> Int) -> Fix ExpressionF -> Int
@@ -369,9 +370,9 @@ def almostCata(evaluator: (ExpressionF[Int] => Int))(e: Fix[ExpressionF]): Int =
    evaluator(Functor[ExpressionF].map(e.unFix)(almostCata(evaluator)))
 ```
 
-Take a moment and think about what happens: we’re passing a recursive function almostCata evaluator into the fmap. If the current expression is AddF or MultF then this function will be passed one level deeper and fmap will be called again. This will happen until we reach ValueF, fmapping over ValueF returns value of type ExpressionF Int and that’s exactly what our evaluator function accepts.
+Take a moment and think about what happens: we’re passing a recursive function `almostCata evaluator` into the `fmap`. If the current expression is `AddF` or `MultF` then this function will be passed one level deeper and `fmap` will be called again. This will happen until we reach `ValueF`, fmapping over `ValueF` returns value of type `ExpressionF Int` and that’s exactly what our evaluator function accepts.
 
-By looking at almostCata we can see that it doesn’t really have anything specific to ExpressionF or Int type and theoretically can be generalized with some type parameter f. The only constraint should be having a Functor instance for f, because we’re using fmap:
+By looking at `almostCata` we can see that it doesn’t really have anything specific to `ExpressionF` or `Int` type and theoretically can be generalized with some type parameter `f`. The only constraint should be having a `Functor` instance for `f`, because we’re using `fmap`:
 
 ```haskell
 cata :: Functor f => (f a -> a) -> Fix f -> a
@@ -383,7 +384,7 @@ def cata[F[_], A](alg: (F[A] => A))(e: Fix[F])(implicit F: Functor[F]): A =
   alg(F.map(e.unFix)(cata(alg)))
 ```
 
-And that’s the final version of cata. Here’s the full implementation with some usage examples:
+And that’s the final version of `cata`. Here’s the full implementation with some usage examples:
 
 ```haskell
 -- Non recursive data structure
@@ -464,7 +465,7 @@ val twentyOne = cata(evalExprF)(someExpression)
 
 A lot of concepts in category theory and functional programming are pretty abstract and sometimes it’s hard to find immediate practical application for certain idea. But looking for abstractions and generalizations is useful for finding patterns and elegant solutions to problems that otherwise require ad-hoc implementation.
 
-By the way, by generalizing our ExpressionF -> Int function to Functor f => (f a -> a) we discovered another important concept called **F-Algebra**. Basically F-Algebra is a triple of functor f, some type a and evaluator function f a -> a. Note that a here not polymorphic — it has to be a concrete type, like Int or Bool and it’s called a **carrier type**. For any endo-functor f you can create multiple F-Algebra’s based on it. Take our expressions example — endo-functor f is ExpressionF, a is Int and evaluator is evalExprF. But we can change the carrier type and produce more algebras:
+By the way, by generalizing our `ExpressionF -> Int` function to `Functor f => (f a -> a)` we discovered another important concept called **F-Algebra**. Basically F-Algebra is a triple of functor `f`, some type `a` and evaluator function `f a -> a`. Note that `a` here not polymorphic — it has to be a concrete type, like `Int` or `Bool` and it’s called a **carrier type**. For any endo-functor `f` you can create multiple F-Algebra’s based on it. Take our expressions example — endo-functor `f` is `ExpressionF`, a is `Int` and evaluator is `evalExprF`. But we can change the carrier type and produce more algebras:
 
 ```haskell
 type Algebra f a = f a -> a
@@ -507,9 +508,9 @@ val algebra2: Algebra[ExpressionF, Boolean] = {
 }
 ```
 
-> That’s just different evaluators that can be passed into cata, right?
+> That’s just different evaluators that can be passed into `cata`, right?
 
-Yes, we’re picking different carrier types and choosing our implementation. But there the trick — there is a mother of all evaluators that we can create by picking our carrier type to be… Fix ExprF.
+Yes, we’re picking different carrier types and choosing our implementation. But there the trick — there is a mother of all evaluators that we can create by picking our carrier type to be… `Fix ExprF`.
 
 ```haskell
 -- just in case:
@@ -526,9 +527,9 @@ final case class Fix[F[_]](unFix: F[Fix[F]])
 //                                       vvvvvvvvvvvvvvvv
 val initialAlgebra: Algebra[ExpressionF, Fix[ExpressionF]] = ???
 ```
-> Evaluating to Int or Bool totally makes sense but what would this initialAlgebra evaluate? When do I need to have Fix of something as a result of my evaluator?
+> Evaluating to `Int` or `Bool` totally makes sense but what would this `initialAlgebra` evaluate? When do I need to have `Fix` of something as a result of my evaluator?
 
-Of course you won’t write something like that yourself, just want to show you the deeper meaning behind f-algebras and cata. In fact, we already have an implementation for such evaluator and thats exactly Fx constructor:
+Of course you won’t write something like that yourself, just want to show you the deeper meaning behind f-algebras and cata. In fact, we already have an implementation for such evaluator and thats exactly `Fx` constructor:
 
 ```haskell
 initialAlgebra :: ExpressionF (Fix ExpressionF) -> Fix ExpressionF
@@ -539,16 +540,16 @@ initialAlgebra = Fx
 val initialAlgebra: Algebra[ExpressionF, Fix[ExpressionF]] = Fix[ExpressionF]
 ```
 
-> Wait, Fx is an evaluator? That’s crazy.
+> Wait, `Fx` is an evaluator? That’s crazy.
 
-Yes and it does the most simple thing you can do — save the expession into a data structure. While all other evaluators (algebra0, algebra1) produced some value by reducing the expression (like doing sum or concatenation) Fx just wraps the expression without loosing any data.
+Yes and it does the most simple thing you can do — save the expession into a data structure. While all other evaluators (`algebra0`, `algebra1`) produced some value by reducing the expression (like doing sum or concatenation) Fx just wraps the expression without loosing any data.
 
-This is why we introduced Fix in the first place — you first evaluate your original data structure with Fx into initial algebra Fix f and then using cata the ‘real’ evaluation happens by fmaping your concrete evaluator over inital algebra.
+This is why we introduced `Fix` in the first place — you first evaluate your original data structure with `Fx` into initial algebra `Fix f` and then using `cata` the ‘real’ evaluation happens by fmaping your concrete evaluator over inital algebra.
 
-From category theory point of view, all algebras based on the same endo-functor form a category. This category has an initial object which is our initial algebra created by picking the carrier type as Fix f. There are some great blog posts by Bartosz Milewski that I highly recommend checking out if you want to get deep categorical understanding.
+From category theory point of view, all algebras based on the same endo-functor form a category. This category has an initial object which is our initial algebra created by picking the carrier type as `Fix f`. There are some great blog posts by Bartosz Milewski that I highly recommend checking out if you want to get deep categorical understanding.
 > It’s still pretty hard to comprehend, I don’t think I fully understand the concept
 
-It’s always better to do hands on: try re-implementing Fix and cata on your own, think about possible data structures and algebras. For example, a String can be represented recursively (as a Char head and tail of String), the length of a string can be computed with cata. Here’s some great resources for further reading:
+It’s always better to do hands on: try re-implementing `Fix` and `cata` on your own, think about possible data structures and algebras. For example, a `String` can be represented recursively (as a `Char` head and tail of `String`), the length of a string can be computed with `cata`. Here’s some great resources for further reading:
 
 * [Understanding F-Algebras](https://www.schoolofhaskell.com/user/bartosz/understanding-algebras) and slightly different [F-Algebras](https://bartoszmilewski.com/2017/02/28/f-algebras/) by [Bartosz Milewski](https://bartoszmilewski.com)
 
