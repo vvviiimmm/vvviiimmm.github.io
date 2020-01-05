@@ -119,7 +119,7 @@ Note, that there are requirements for the class to be implicit:
 * There may not be any method, member or object in scope with the same name
 
 ## Case 4: Type classes
-With _implicit objects_ it is possible to implement _type classes_ — a type system construct that supports ad hoc polymorphism. (To get more understanding about type classes and their purpose check this [To get more understanding about type classes and their purpose check [Type classes explained](https://vvviiimmm.github.io/fp/typecalsses)]).
+With _implicit objects_ it is possible to implement _type classes_ — a type system construct that supports ad hoc polymorphism. (More on type classes in [Type classes explained](https://vvviiimmm.github.io/fp/typecalsses)).
 
 Type class is somewhat similar to an interface which can have multiple implementations. In OOP languages those implementations are usually classes that extend the interface and are instantiated where needed. With type classes they have to be instantiated once and be ‘globally’ available. Singleton is a usual name for this pattern which scala natively supports with `object` declarations.
 
