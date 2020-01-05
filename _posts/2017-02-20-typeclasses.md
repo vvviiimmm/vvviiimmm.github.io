@@ -1,5 +1,5 @@
 ---
-title: "Type clases explained"
+title: "Type classes explained"
 classes: wide
 categories:
   - FP
@@ -236,7 +236,7 @@ Hope it all made sense and if not — no worries, the concept is not easy to und
 
 #### References
 
-1. Cordelia Hall, Kevin Hammond, Simon Peyton Jones, and Philip Wadler, "Type classes in Haskell" [https://homepages.inf.ed.ac.uk/wadler/papers/classhask/classhask.ps]
-2. Bryan O'Sullivan, Don Stewart, John Goerzen, "Chapter 6. Using Typeclasses" in Real World Haskell [http://book.realworldhaskell.org/read/using-typeclasses.html]
-3. Learn You a Haskell: Types and Typeclasses [http://learnyouahaskell.com/types-and-typeclasses]
-4. A Gentle Introduction to Haskell, Version 98: Type Classes and Overloading [https://www.haskell.org/tutorial/classes.html]
+1. Cordelia Hall, Kevin Hammond, Simon Peyton Jones, and Philip Wadler, "Type classes in Haskell" <https://homepages.inf.ed.ac.uk/wadler/papers/classhask/classhask.ps>
+2. Bryan O'Sullivan, Don Stewart, John Goerzen, "Chapter 6. Using Typeclasses" in Real World Haskell <http://book.realworldhaskell.org/read/using-typeclasses.html>
+3. Learn You a Haskell: Types and Typeclasses <http://learnyouahaskell.com/types-and-typeclasses>
+4. A Gentle Introduction to Haskell, Version 98: Type Classes and Overloading <https://www.haskell.org/tutorial/classes.html>
