@@ -1,11 +1,8 @@
 ---
 title: "Catamorphisms and F-Algebras"
 classes: wide
-categories:
-  - Markup
 tags:
   - html
-  - markup
   - post
   - title
 ---
