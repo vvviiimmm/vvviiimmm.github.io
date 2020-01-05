@@ -1,6 +1,8 @@
 ---
 title: "Catamorphisms and F-Algebras"
 classes: wide
+categories:
+  - FP
 tags:
   - catamorphism
   - recursion

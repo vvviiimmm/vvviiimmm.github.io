@@ -2,11 +2,8 @@
 layout: home
 permalink: /articles/
 title: "Articles"
+author_profile: true
 ---
-
-<div id="main" role="main">
-  {% include sidebar.html %}
-</div>
 
 {% assign postsByYear = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
 {% for year in postsByYear %}
