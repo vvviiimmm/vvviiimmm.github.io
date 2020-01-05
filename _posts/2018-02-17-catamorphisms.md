@@ -2,9 +2,9 @@
 title: "Catamorphisms and F-Algebras"
 classes: wide
 tags:
-  - html
-  - post
-  - title
+  - catamorphism
+  - recursion
+  - functional programming
 ---
 
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/cata/header.png){: .align-center}
