@@ -8,7 +8,7 @@ tags:
   - scala
 ---
 
-![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/rt/header.png){: .align-center}
+![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/trampoline/header.png){: .align-center}
 
 ## Problem
 
