@@ -14,25 +14,25 @@ Disclaimer: this article is a parody inspired by the [Haskell version](https://w
 
 ---
 
-Table of Contents
-* Beginner Scala programmer
-* Beginner functional Scala programmer
-* Scala programmer circa 2011
-* Free monadic Scala programmer
-* Freak monad Scala programmer
-* Tagless Final Scala programmer
-* John A De Goes
-* Fabio Labella
-* Akka Scala programmer
-* Spark Scala programmer
-* Java Scala programmer
-* Trampolined Scala programmer
-* Peano ADT Scala programmer
-* Type level Scala programmer
-* Shapeless Scala programmer
-* Fix Scala programmer
-* Paramorphism Scala programmer
-* Apo-futu-hylomorphism Scala programmer
+### Table of Contents
+* [Beginner Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#beginner-scala-programmer)
+* [Beginner functional Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#beginner-functional-scala-programmer)
+* [Scala programmer circa 2011](https://vvviiimmm.github.io/scala/scala-evolution/#scala-programmer-circa-2011)
+* [Free monadic Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#free-monadic-scala-programmer)
+* [Freak monad Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#freak-monadic-scala-programmer)
+* [Tagless Final Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#tagless-final-scala-programmer)
+* [John A De Goes](https://vvviiimmm.github.io/scala/scala-evolution/#john-a-de-goes)
+* [Fabio Labella](https://vvviiimmm.github.io/scala/scala-evolution/#fabio-labella)
+* [Akka Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#akka-scala-programmer)
+* [Spark Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#spark-scala-programmer)
+* [Java Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#java-scala-programmer)
+* [Trampolined Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#trampolined-scala-programmer)
+* [Peano ADT Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#peano-adt-scala-programmer)
+* [Type level Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#type-level-scala-programmer)
+* [Shapeless Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#shapeless-scala-programmer)
+* [Fix Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#fix-scala-programmer)
+* [Paramorphism Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#paramorphism-scala-programmer)
+* [Apo-futu-hylomorphism Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#apo-futu-hylomorphism-scala-programmer)
 
 ---
 
@@ -1188,7 +1188,23 @@ object Main extends App {
 
 --- 
 
-All code examples are available on GitHub: https://github.com/vvviiimmm/scala-evolution
+All code examples are [available on GitHub](https://github.com/vvviiimmm/scala-evolution)
 
 ### References:
 
+Free monad 0: <https://typelevel.org/cats/datatypes/freemonad.html>
+Free monad 1: <http://degoes.net/articles/modern-fp>
+FreeK monad: <https://github.com/ProjectSeptemberInc/freek>
+Recursion schemes: <https://free.cofree.io/2017/11/13/recursion>
+Fix combinator: <https://free.cofree.io/2017/08/28/fixpoint>
+Tagless final 0: <http://okmij.org/ftp/tagless-final/course/lecture.pdf>
+Tagless final 1: <https://typelevel.org/blog/2018/06/27/optimizing-tagless-final-2.html>
+ZIO (John A De Goes): <https://skillsmatter.com/skillscasts/13247-scala-matters>
+ZIO: <https://zio.dev>
+Shapeless: <https://underscore.io/books/shapeless-guide>
+Type level computations: <http://slick.lightbend.com/talks/scalaio2014/Type-Level_Computations.pdf>
+Peano numbers: <https://wiki.haskell.org/Peano_numbers>
+Trampoline 0: <https://free.cofree.io/2017/08/24/trampoline>
+Trampoline 1: <https://medium.com/@olxc/trampolining-and-stack-safety-in-scala-d8e86474ddfa>
+Apache Spark: <https://spark.apache.org/docs/0.9.1/scala-programming-guide.html>
+Akka: <https://doc.akka.io/docs/akka/current/index-actors.html?language=scala>
