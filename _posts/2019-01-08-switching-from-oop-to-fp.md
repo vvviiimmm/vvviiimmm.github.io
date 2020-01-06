@@ -20,13 +20,13 @@ Switching to FP style indeed requires a mindset change. You no longer have your 
 
 It this article I’ll try to break down some concepts and answer common questions that bugged me when I was learning FP.
 
-1. There are no classes
-2. All you need is a function
-3. No, you can’t change a variable
-4. No, you can’t do ‘for’ loops
-5. Your code is not a list of instructions anymore
-6. On nulls and exceptions
-7. Functors, Monads, Applicatives?
+1. [There are no classes](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#1-there-are-no-classes)
+2. [All you need is a function](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#2-all-you-need-is-a-function)
+3. [No, you can’t change a variable](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#3-no-you-cant-change-a-variable)
+4. [No, you can’t do ‘for’ loops](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#4-no-you-cant-do-for-loops)
+5. [Your code is not a list of instructions anymore](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#5-your-code-is-not-a-list-of-instructions-anymore)
+6. [On nulls and exceptions](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#6-on-nulls-and-exceptions)
+7. [Functors, Monads, Applicatives?](https://vvviiimmm.github.io/scala/switching-from-oop-to-fp/#7-functors-monads-applicatives)
 
 ## 1. There are no classes
 
@@ -37,7 +37,13 @@ Turns out you don’t need classes. Like in a good old procedural programming yo
 
 I would suggest to stop thinking about ‘creating instances of a class’ or ‘calling class methods’. Your program will be just a bunch of functions that can call each other.
 
+{% capture fig_img %}
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/oop2fp/1.jpeg){: .align-center}
+{% endcapture %}
+
+{% capture fig_caption %}
+Slide from https://slidle.com/jivko/functional-programming
+{% endcapture %}
 
 Side note: a lot of FP languages have a notion of a ‘type class’ which shouldn’t be confused with OOP understanding of a class. Type classes purpose is to provide `polymorphism`. You don’t have to worry about it too much at first but if you’re interested check out this article: [Type classes explained](https://vvviiimmm.github.io/fp/typeclasses/).
 
@@ -47,10 +53,12 @@ Side note: a lot of FP languages have a notion of a ‘type class’ which shoul
 For that we have Algebraic Data Types (ADT), which is just a fancy name for a record that holds data.
 
 ```scala
+// Scala
 case class Person(name: String, age: Int)
 ```
 
 ```haskell
+-- Haskell
 data Person = Person String Int
 
 -- OR
@@ -65,6 +73,7 @@ data Person = Person
 You can think about it as a class that only has a constructor and nothing else. Using FP terminology they are ‘Types’ and the constructors are called ‘Type constructors’. This is how you construct types and get values out of them:
 
 ```scala
+// Scala
 case class Person(name: String, age: Int)
 
 // Using type constructor
@@ -75,6 +84,7 @@ val personsAge = person.age
 ```
 
 ```haskell
+-- Haskell
 data Person = Person
   { name :: String
   , age :: Int
@@ -99,6 +109,7 @@ Note that in Haskell `name` and `age` are actually functions that take a value o
 Changing things in place (in imperative programming understanding) is a mutation and you can not do mutation in FP (more on that later). If you want to change something — you make a copy of it.
 
 ```scala
+// Scala
 val bob = Person("Bob", 42)
 
 // .copy provided by the 'case class'
@@ -106,6 +117,7 @@ val olderBob = bob.copy(age = 43)
 ```
 
 ```haskell
+-- Haskell
 bob = Person "Bob" 42
  
 olderBob = bob { age = 43 }
@@ -116,6 +128,7 @@ There are 2 kinds of ADT worth knowing: **product** type and **sum** type.
 * Product type: a collection of fields, all have to be specified in order to construct a type:
 
 ```scala
+// Scala
 // Person is a product type consisting of 3 fields
 case class Person(name: String, age: Int, address: Address)
 
@@ -127,6 +140,7 @@ case class Point(x: Double, y: Double, z: Double)
 ```
 
 ```haskell
+-- Haskell
 -- Person is a product type consisting of 3 fields
 data Person = Person
   { name :: String
@@ -152,6 +166,7 @@ data Position = Position
 * Sum type: represents optionality. Either your type is something *or* something else. Example, a `Shape` can be a `Circle` or a `Square`.
 
 ```scala
+// Scala
 // Scala doesn't have a nice syntax for sum types so
 // it looks like a familiar OOP inheritance tree.
 sealed trait Shape
@@ -165,6 +180,7 @@ case class Square(side: Int) extends Shape
 ```
 
 ```haskell
+-- Haskell
 -- The | can be read as 'or'
 data Shape = Circle Int | Square Int
 
@@ -182,6 +198,7 @@ ADTs can be nested as well: a `Shape` is a sum type where each option can be a s
 Besides being basic building blocks for modeling they are natively supported by most of FP languages. Product types can be deconstructed and statically checked while sum types can be used for pattern matching:
 
 ```scala
+// Scala
 sealed trait Shape
 
 case class Circle(radius: Int) extends Shape
@@ -199,6 +216,7 @@ def area(shape: Shape): Double = shape match {
 ```
 
 ```haskell
+-- Haskell
 data Shape
   = Circle { radius :: Double }
   | Rectangle { width :: Double
@@ -227,6 +245,7 @@ There are 3 main properties a function should have:
 Most programming languages cannot enforce these properties statically so its programmer responsibility to satisfy those properties. For example, Scala compiler will happily accept functions that impure, partial and non deterministic:
 
 ```scala
+// Scala
 // Just an example, don't do this at home
 def isPositive(number: Int): Boolean = {
   if (number == 0)
@@ -245,6 +264,7 @@ def isPositive(number: Int): Boolean = {
 In Haskell, on the other hand, you can’t (easily) write a function that isn’t pure or non deterministic: any kind of side effecting function will return an `IO` which is a value that _represents_ ‘side effectful’ computation. Totality property is still on the programmer, as you can throw exceptions or return so called bottom which will terminate the program.
 
 ```haskell
+-- Haskell
 isPositive :: Int -> Bool
 isPositive number = undefined -- compiles but throws exception when called 
 
@@ -283,6 +303,7 @@ No mutation meaning no ‘for’ loops, as it usually mutates some counter ‘i�
 You have to get comfortable with recursion as it is everywhere in FP. For example, a sum of all numbers in a list will look like this:
 
 ```scala
+// Scala
 // 'List' is defined as a sum type so we can use pattern matching.
 // There are two type constructors we need to check: one for empty list and
 // one for head and tail:
@@ -302,6 +323,7 @@ sum(List(1,2,3,4,5)) // 15
 ```
 
 ```haskell
+-- Haskell
 -- Similar to Scala version, List is just a sum type with two options
 -- [] is a type constructor for an empty list
 mySum :: [Int] -> Int
@@ -320,6 +342,7 @@ It’s common to work with recursive data structures, like lists or trees. Even 
 Higher order functions take other functions as an argument. Talking about iterations you have to know how to use `map` and `fold`:
 
 ```scala
+// Scala
 // Pass a function to transform every item in the list
 List(1,2,3,4,5).map(n => n + 1) // List(2,3,4,5,6)
 
@@ -335,6 +358,7 @@ List(1,2,3,4,5).foldLeft("")((acc, number) => acc ++ (number * 2).toString) // "
 ```
 
 ```haskell
+-- Haskell
 -- Add 1 to every item in the list
 map (+1) [1,2,3,4,5] -- [2,3,4,5,6]
 
@@ -364,6 +388,7 @@ There are much more functions but knowing those 2 can get you a long way for mos
 In imperative language you could do this:
 
 ```scala
+// Scala
 object MyProgram extends App {
   doThis()
   doThat()
@@ -382,6 +407,7 @@ Sure, but in functional program **nothing** is executed until the very last mome
 This is how that program will look like in FP:
 
 ```scala
+// Scala
 object MyProgram extends App {
   unsafeRun(             //       <-- This guy takes your pure program 
                          //           and actually runs it
@@ -406,6 +432,7 @@ It is also not an easy concept to grasp, as we used to throwing some additional 
 Nulls are all over imperatively written code bases. The problem with null is that it’s a lower level abstraction leaked into higher level type system. If I see a function that returns a `Person` then (if a function is total) I expect to get a `Person` that has a name, address, whatever. The `null` is not a person. `null` is often used to represent absence or some sort of internal failure that prevents function from returning a proper value. If a function can somehow fail to return a `Person` it should say so in its _type definition_. In FP we can represent absence with a sum type:
 
 ```scala
+// Scala
 // A simple sum type that has two options
 sealed trait Option[A]
 
@@ -436,6 +463,7 @@ def divide(dividend: Int, divisor: Int): Int =
 ```
 
 ```haskell
+-- Haskell
 -- Simple sum type with two options
 data Maybe a = Just a | Nothing
 
