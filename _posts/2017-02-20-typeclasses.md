@@ -45,7 +45,7 @@ Take a look at how we use our custom implementations (last 2 lines). We’re cre
 ## Polymorphism via type classes
 
 > OOP approach consolidates data and related functions in one place— class definition. “Type classes” go with a different approach — entities representing data are decoupled from entities responsible for implementation.
-{: .notice}
+{: .notice--info}
 
 It will sound strange and confusing at first. But no worries, it will make sense shortly.
 
