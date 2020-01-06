@@ -1,0 +1,466 @@
+---
+title: "Switching from OOP to Functional Programming"
+classes: wide
+categories:
+  - scala
+tags:
+  - functional programming
+  - scala
+  - haskell
+---
+
+## Why functional programming is so hard?
+
+![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/oop2fp/header.jpeg){: .align-center}
+
+> Q: I’ve heard a lot of good things about functional programming but I find it very difficult to understand. I have years of experience in C++/Java/C#/Javascript/etc but it doesn’t help, it feels like learning to code from scratch again. Where should I start?
+{: .notice--info}
+
+Switching to FP style indeed requires a mindset change. You no longer have your usual primitives, like classes, mutable variables, loops, etc. You will not be productive for the first couple of months, you will be stuck for hours or days on some simple things that usually took minutes. It will be hard and you will feel stupid. We all did. But after it clicks you will gain superpowers. I don’t know a single person who switched back from FP to OOP after doing FP daily. You may switch to a language that doesn’t have FP support but you’ll still be writing using FP concepts, there are that good.
+
+It this article I’ll try to break down some concepts and answer common questions that bugged me when I was learning FP.
+
+1. There are no classes
+2. All you need is a function
+3. No, you can’t change a variable
+4. No, you can’t do ‘for’ loops
+5. Your code is not a list of instructions anymore
+6. On nulls and exceptions
+7. Functors, Monads, Applicatives?
+
+## 1. There are no classes
+
+> Q: No classes? How do I structure my code then?
+{: .notice--info}
+
+Turns out you don’t need classes. Like in a good old procedural programming your program is just a collection of functions except in FP those functions have to have some properties (discussed later) and they also have to `compose`. You will hear the word ‘composition’ a lot as this is one of the core ideas of FP.
+
+I would suggest to stop thinking about ‘creating instances of a class’ or ‘calling class methods’. Your program will be just a bunch of functions that can call each other.
+
+![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/oop2fp/1.jpeg){: .align-center}
+
+Side note: a lot of FP languages have a notion of a ‘type class’ which shouldn’t be confused with OOP understanding of a class. Type classes purpose is to provide `polymorphism`. You don’t have to worry about it too much at first but if you’re interested check out this article: [Type classes explained](https://vvviiimmm.github.io/fp/typeclasses/).
+
+> Q: What about data? I often have some data and functions that change that data in one class.
+{: .notice--info}
+
+For that we have Algebraic Data Types (ADT), which is just a fancy name for a record that holds data.
+
+```scala
+case class Person(name: String, age: Int)
+```
+
+```haskell
+data Person = Person String Int
+
+-- OR
+
+data Person = Person
+  { name :: String
+  , age :: Int
+  , address :: Address
+  }
+```
+
+You can think about it as a class that only has a constructor and nothing else. Using FP terminology they are ‘Types’ and the constructors are called ‘Type constructors’. This is how you construct types and get values out of them:
+
+```scala
+case class Person(name: String, age: Int)
+
+// Using type constructor
+val person = Person("Bob", 42)
+
+// Accessing fields
+val personsAge = person.age
+```
+
+```haskell
+data Person = Person
+  { name :: String
+  , age :: Int
+  , address :: Address
+  }
+
+-- Using type constructor
+person = Person "Bob" 42
+
+-- Or using records notation
+person = Person {name = "Bob", age = 42}
+
+-- Accessing fields
+personsName = name person -- "Bob"
+```
+
+Note that in Haskell `name` and `age` are actually functions that take a value of type `Person` and return its fields.
+
+> Q: Ok, but how do I change the person’s age, for example?
+{: .notice--info}
+
+Changing things in place (in imperative programming understanding) is a mutation and you can not do mutation in FP (more on that later). If you want to change something — you make a copy of it.
+
+```scala
+val bob = Person("Bob", 42)
+
+// .copy provided by the 'case class'
+val olderBob = bob.copy(age = 43)
+```
+
+```haskell
+bob = Person "Bob" 42
+ 
+olderBob = bob { age = 43 }
+```
+
+There are 2 kinds of ADT worth knowing: **product** type and **sum** type.
+
+* Product type: a collection of fields, all have to be specified in order to construct a type:
+
+```scala
+// Person is a product type consisting of 3 fields
+case class Person(name: String, age: Int, address: Address)
+
+// Address on its own also is a product type
+case class Address(country: String, city: String, street: String)
+
+// In order to create a Point you have to provide all 3 arguments
+case class Point(x: Double, y: Double, z: Double)
+```
+
+```haskell
+-- Person is a product type consisting of 3 fields
+data Person = Person
+  { name :: String
+  , age :: Int
+  , address :: Address
+  }
+
+-- Address is a product type on its own
+data Address = Address
+  { country :: String
+  , city :: String
+  , street :: String
+  }
+
+-- In order to create Position you have to provide all 3 coordinates
+data Position = Position
+  { x :: Integer
+  , y :: Integer
+  , z :: Integer
+  }
+```
+
+* Sum type: represents optionality. Either your type is something *or* something else. Example, a `Shape` can be a `Circle` or a `Square`.
+
+```scala
+// Scala doesn't have a nice syntax for sum types so
+// it looks like a familiar OOP inheritance tree.
+sealed trait Shape
+
+// But don't get confused: the 'extends' here stands for 'is'
+// relationship, not in a sense of 'extends and overrides methods'.
+// It only says that when you create a Circle it will be of type 'Shape'
+case class Circle(radius: Int) extends Shape
+
+case class Square(side: Int) extends Shape
+```
+
+```haskell
+-- The | can be read as 'or'
+data Shape = Circle Int | Square Int
+
+-- Alternatively 
+data Shape
+  = Circle { radius :: Int }
+  | Square { side :: Int }
+```
+
+ADTs can be nested as well: a `Shape` is a sum type where each option can be a sum or a product on its own. Any kind of domain model can be represented as a combination of sum and product types.
+
+> Q: Why sums and products are so special?
+{: .notice--info}
+
+Besides being basic building blocks for modeling they are natively supported by most of FP languages. Product types can be deconstructed and statically checked while sum types can be used for pattern matching:
+
+```scala
+sealed trait Shape
+
+case class Circle(radius: Int) extends Shape
+
+case class Rectangle(width: Int, height: Int) extends Shape
+
+// 'match' keyword allows us to pattern match on a 
+// specific option of the sum type
+def area(shape: Shape): Double = shape match {
+  case Circle(r) => math.Pi * r * r
+  case Rectangle(w, h) => w * h // Note how rectangle's width and height 
+                                // are captured in 'w' and 'h'. It's possible
+                                // because Rectange is a product type
+}
+```
+
+```haskell
+data Shape
+  = Circle { radius :: Double }
+  | Rectangle { width :: Double
+              , height :: Double }
+
+-- In haskell different options of a sum type can
+-- be handled with different 'functions'
+area :: Shape -> Double
+area (Circle r) = pi * r * r
+area (Rectangle w h) = w * h -- width and height are captured in 'w' and 'h' 
+                             -- because Rectangle is a product type
+```
+
+## 2. All you need is a function
+
+Meet your new best friend — a function. You may know it by different names: getter, setter, constructor, method, builder, static function, etc. In OOP those names are associated with different contexts and have different properties. In FP a function is always just a function — it takes values as input and returns values as output.
+
+There is no need to instantiate anything to use functions (as there is no classes), you just import the module where the function is defined and just call it. A functional program is just a collection of ADTs and functions, as in `Shape`s example above.
+
+There are 3 main properties a function should have:
+
+1. **Pure**: no side effects. Functions are not allowed to do more than their type definition says. For example, a function that takes an `Int` and returns an `Int` cannot change global variables, access filesystem, do network requests, etc. It can *only* do some transformations on the input and return some value.
+2. **Total**: returns values for all inputs. Functions that crash or throw exceptions on some inputs are not total or _partial_. For example a `div` function: type declaration promises that it takes an `Int` and returns an `Int` however if the second argument is `0` it will throw ‘division by zero’ exception, hence it’s not total.
+3. **Deterministic**: returns the same result for the same input. For deterministic function it doesn’t matter how and when it’s called — it will always return the same value. Functions that depend on a current date, clock, timezone or some external state are not deterministic.
+
+Most programming languages cannot enforce these properties statically so its programmer responsibility to satisfy those properties. For example, Scala compiler will happily accept functions that impure, partial and non deterministic:
+
+```scala
+// Just an example, don't do this at home
+def isPositive(number: Int): Boolean = {
+  if (number == 0)
+    throw new Exception("meh") // Partial (non total)
+  else {
+    println("Calling isPositive!") // Impure (writing to std out is a side effect)
+
+    if (System.currentTimeMillis() % 2 == 0) // Non deterministic
+      number > 0
+    else
+      number < 0
+  }
+}
+```
+
+In Haskell, on the other hand, you can’t (easily) write a function that isn’t pure or non deterministic: any kind of side effecting function will return an `IO` which is a value that _represents_ ‘side effectful’ computation. Totality property is still on the programmer, as you can throw exceptions or return so called bottom which will terminate the program.
+
+```haskell
+isPositive :: Int -> Bool
+isPositive number = undefined -- compiles but throws exception when called 
+
+-- Or
+isPositive number = error "meh" -- same
+```
+
+> Q: Why do I care if a function has these properties or not?
+{: .notice--info}
+
+If a function satisfy those properties you get “referential transparency” ([more detailed in a separate article](https://vvviiimmm.github.io/scala/rt/)). In short, you’ll get the ability to look at the function type definition and know exactly what it can and cannot do. You can refactor your code fearlessly because RT guarantees you nothing will break. RT is basically what allows us to control complexity of our software. Refactoring in OOP can be a nightmare as you don’t know which objects call what and when until you actually run the program and build a mental model in your head. And even then it’s not an easy task.
+
+## 3. No, you can’t change a variable
+
+> Q: This is the weirdest part, how do I make anything useful without changing variables?
+{: .notice--info}
+
+If you have a variable `person` that is bound to `Person("Bob", 42)` you cannot reassign it to `Person("Bob",43)`. What you _can_ do is to create a different variable by creating a copy and specifying what you want to be changed (as we discussed before). Variables are immutable and used only to alias or _label values_, not as a physical reference or a pointer to the actual data.
+
+> Q: Why not just change it in place?
+{: .notice--info}
+
+Because it breaks referential transparency and, as I said before, referential transparency is the key to FP. It will make your life so much easier while not having mutable variables is a fair price to pay. Besides, no mutation means you get thread safe code for free, no more weekends wasted on ‘happens only on a Tuesday evening’ concurrency bugs.
+
+Immutability is a simple concept but it’s hard to adopt after years of OOP experience. It’s common to see people reverting to `var`s in Scala just ‘to get this thing working’. It’s fine to do that at first but always look for an immutable implementation. Besides, there is no such ‘hack’ in Haskell so you have to be immutable from day 1.
+
+## 4. No, you can’t do ‘for’ loops
+
+> Q: Our bread and butter — the ‘for’ loop — you say FP doesn’t have it as well? How do you iterate over an array?
+{: .notice--info}
+
+No mutation meaning no ‘for’ loops, as it usually mutates some counter ‘i’ until some predicate is met. However, we have other means of achieving the same — recursion and higher order functions.
+
+### Recursion
+
+You have to get comfortable with recursion as it is everywhere in FP. For example, a sum of all numbers in a list will look like this:
+
+```scala
+// 'List' is defined as a sum type so we can use pattern matching.
+// There are two type constructors we need to check: one for empty list and
+// one for head and tail:
+def sum(lst: List[Int]): Int = lst match {
+  case Nil => 0 // Nil is a type constructor for an empty list
+  case x :: xs => x + sum(xs) // x :: xs looks weird but it's actually just
+                              // a product type named '::' and can be rewritten as
+                              // case ::(x, xs) => ...
+                              // Scala allows infix operators for type constructors
+                              // so it's possible to say 'case x :: xs'
+}
+
+sum(List(1,2,3,4,5)) // 15
+
+// This is just an example, as there is a built in sum function that
+// can be used as List(1,2,3,4,5).sum
+```
+
+```haskell
+-- Similar to Scala version, List is just a sum type with two options
+-- [] is a type constructor for an empty list
+mySum :: [Int] -> Int
+mySum [] = 0
+mySum (x : xs) = x + (mySum xs)
+
+-- We will step through the list building a sum expression until we hit
+-- the empty list case which returns 0. That will close the loop and
+-- the built up expression will be summed up
+```
+
+It’s common to work with recursive data structures, like lists or trees. Even natural numbers can be expressed in [this way](https://wiki.haskell.org/Peano_numbers). Natural way of traversing those structures is by pattern matching on type constructors and apply recursive functions to the recursive parts of the data structure. A general pattern is to first define a base case, such as an empty list case to terminate recursion and then define a general case.
+
+### Higher order functions
+
+Higher order functions take other functions as an argument. Talking about iterations you have to know how to use `map` and `fold`:
+
+```scala
+// Pass a function to transform every item in the list
+List(1,2,3,4,5).map(n => n + 1) // List(2,3,4,5,6)
+
+// Or shorter syntax
+List(1,2,3,4,5).map(_ * 2) // List(2,4,6,8,10)
+
+// Fold example. Sum all the values in a list
+List(1,2,3,4,5).fold(0)((l, r) => l + r) // 15
+
+// Multiply each number by 2, convert to string and 
+// produce a total string appending the results together
+List(1,2,3,4,5).foldLeft("")((acc, number) => acc ++ (number * 2).toString) // "246810"
+```
+
+```haskell
+-- Add 1 to every item in the list
+map (+1) [1,2,3,4,5] -- [2,3,4,5,6]
+
+-- Sum all the values
+foldl' (+) 0 [1,2,3,4,5] -- 15
+
+-- Multiply each number by 2, convert to string and 
+-- produce a total string appending the results together
+foldl' (\acc n -> acc ++ show (n * 2)) "" [1,2,3,4,5] -- "246810"
+
+-- foldl'    (\acc n -> acc ++ show (n * 2))         ""               [1,2,3,4,5]
+-- ^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^         ^^               ^^^^^^^^^^^
+-- name     binary function that 'does the work'    initial value    list to fold
+```
+
+> Q: What’s up with names? map? Isn’t like foreach?
+{: .notice--info}
+
+Yes, but only for lists. Soon you will found out that `map` is not about transforming a list but a has a different semantics depending on what we want to _map_. If you want to know more — lookup `Functor`, which is a higher kinded type that provides a mapping interface. But don’t worry about `Functor`s too much—just think of `map` as a function that knows how to iterate over data structures, such as lists, trees, dictionaries, etc.
+
+`fold` also has a deeper meaning and relates to `Foldable`. The intuition is that it takes some data structure and produces a single value, such as sum. Note that `map`, unlike `fold`, applies function to each value independently while `fold` can carry some sort of accumulator that depends on previous values.
+
+There are much more functions but knowing those 2 can get you a long way for most iteration problems.
+
+## 5. Your code is not a list of instructions anymore
+
+In imperative language you could do this:
+
+```scala
+object MyProgram extends App {
+  doThis()
+  doThat()
+  doSomethingElse()
+  printResult()
+}
+```
+
+These functions have ‘side-effects’, e.g. they **do something**. The result of their actions is a changed state of the entire program — some files have been written to the disk, output in the console, updated internal entities map, etc. Once you call such function — it’s done, completed, executed.
+
+> Well, nothing new here, this is how I usually program.
+{: .notice--info}
+
+Sure, but in functional program **nothing** is executed until the very last moment. Your functions have to take values and return values, no side-effecting allowed. The output of one function is an input for some other function which, in its turn, creates an input for some other function and so on.
+
+This is how that program will look like in FP:
+
+```scala
+object MyProgram extends App {
+  unsafeRun(             //       <-- This guy takes your pure program 
+                         //           and actually runs it
+    printResult(         // --
+      doSomethingElse(   //   | 
+        doThat(          //   |
+          doThis()       //   | This is your 'pure' part, nothing happened yet
+        )                //   |
+      )                  //   |
+    )                    // --
+    
+  )
+}
+```
+
+Note the `unsafeRun` function (let’s say its provided by the language). Before `unsafeRun` all we’ve done is gluing functions together, nothing is executed. We are building some sort of execution plan — “this function has to be called first, then based on it’s output we will call one of those two functions” and so on.
+
+It is also not an easy concept to grasp, as we used to throwing some additional behavior here in there that **does** things, like logging statements or sets some flag, clears a queue, etc. You no longer can get away with that as these additional functions have to follow the types and compose with other functions. And this is a good thing — it forces us to be more principled about what our program is doing and make sure that everything is encoded within the function’s type signature.
+
+## 6. On nulls and exceptions
+
+Nulls are all over imperatively written code bases. The problem with null is that it’s a lower level abstraction leaked into higher level type system. If I see a function that returns a `Person` then (if a function is total) I expect to get a `Person` that has a name, address, whatever. The `null` is not a person. `null` is often used to represent absence or some sort of internal failure that prevents function from returning a proper value. If a function can somehow fail to return a `Person` it should say so in its _type definition_. In FP we can represent absence with a sum type:
+
+```scala
+// A simple sum type that has two options
+sealed trait Option[A]
+
+// A value of some type 'A' (product type with a single field)
+case class Some[A](value: A) extends Option[A]
+
+// Type constructor that represents absence of a value
+case class None[A]() extends Option[A]
+
+// Instead of throwing an exception or crashing the function will
+// return a *value*.
+def divide(dividend: Int, divisor: Int): Option[Int] =
+  if (divisor == 0)
+    None()
+  else
+    Some(dividend / divisor)
+
+// And compare it to the usual non total and unsafe function.
+// By looking at the type signature we have no idea if the
+// function is total or not, will it throw or not
+def divide(dividend: Int, divisor: Int): Int =
+  if (divisor == 0)
+    throw new Exception("meh")
+  else
+    dividend / divisor
+
+// The 'Option' sum type is available in the Scala standard library
+```
+
+```haskell
+-- Simple sum type with two options
+data Maybe a = Just a | Nothing
+
+-- Safe total function that never throws
+divide :: Int -> Int -> Maybe Int
+divide dividend divisor = if divisor == 0 then Nothing else Just (dividend / divisor)
+
+-- Maybe is available in Data.Maybe module
+```
+
+If a function returns a `Maybe` or an `Option` of `Person` it explicitly says — `Person` is not guaranteed. The caller will _have_ to check if the returned value is `Some` or `None`, that means no more `null` dereferencing problems or `null` pointer exceptions.
+
+If you think about it, `null` is kind of a low level primitive that relates to the runtime system rather to your program logic. When you write in a higher level languages with garbage collection you don’t really care when and how the objects are allocated in memory, nor what is the generated machine code for your function is. This is what higher level languages are for — they create an abstraction so you don’t have to think about the details. `null` breaks this abstraction so the code becomes polluted with weird `p != null` checks or even worse — dereferencing problems.
+
+Similarly, exceptions. There is no need for a special mechanism with a special syntax just to deal with exceptional cases. In your pure program it’s possible to represent absence, failures and exceptions with ordinary _values_. Throwing exceptions with `throw e` makes function _partial_ (non total) which again breaks referential transparency and creates problems.
+
+If you work with JVM and use java libraries you will _have_ to deal with exceptions. And it’s ok to use exception is some special cases, like `IO`, but make sure it’s part of a function type — a caller has to know that function throws, what kind of exceptions can be thrown and those promises can be checked at compile time.
+
+## 7. Functors, Monads, Applicatives?
+
+> Q: I hear FP people talk about this things constantly but they don’t make any sense to me. Is there an easy explanation?
+{: .notice--info}
+
+People have discovered general patterns and gave them names from category theory. Functors, Monads and Traversables are pretty powerful and common abstractions, you will see them everywhere. It’s probably a topic for an article on its own. But for now— don’t worry about it. You will learn about them eventually (or maybe even re-invent them yourself). Get comfortable with function composition, higher order functions and polymorphic functions. Then read about [type classes](https://vvviiimmm.github.io/fp/typeclasses/). After that Functors and Monads should come naturally. The takeaway here is that there is no magic and there isn’t much more to it than we have already discussed in this article — pure functions and function composition.
+
+---
+
+Hope it was helpful and if not — please send me your feedback. As someone said, “once you understand Monads you loose the ability to explain it to others”, so I hope this article wasn’t too far from what OOP developers usually experience. Thanks for reading and enjoy your FP journey.
