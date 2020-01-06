@@ -21,7 +21,7 @@ Disclaimer: this article is a parody inspired by the [Haskell version](https://w
 * [Beginner functional Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#beginner-functional-scala-programmer)
 * [Scala programmer circa 2011](https://vvviiimmm.github.io/scala/scala-evolution/#scala-programmer-circa-2011)
 * [Free monadic Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#free-monadic-scala-programmer)
-* [Freak monad Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#freak-monadic-scala-programmer)
+* [Freak monad Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#freak-monad-scala-programmer)
 * [Tagless Final Scala programmer](https://vvviiimmm.github.io/scala/scala-evolution/#tagless-final-scala-programmer)
 * [John A De Goes](https://vvviiimmm.github.io/scala/scala-evolution/#john-a-de-goes)
 * [Fabio Labella](https://vvviiimmm.github.io/scala/scala-evolution/#fabio-labella)
@@ -1194,19 +1194,19 @@ All code examples are [available on GitHub](https://github.com/vvviiimmm/scala-e
 
 ### References:
 
-Free monad 0: <https://typelevel.org/cats/datatypes/freemonad.html>
-Free monad 1: <http://degoes.net/articles/modern-fp>
-FreeK monad: <https://github.com/ProjectSeptemberInc/freek>
-Recursion schemes: <https://free.cofree.io/2017/11/13/recursion>
-Fix combinator: <https://free.cofree.io/2017/08/28/fixpoint>
-Tagless final 0: <http://okmij.org/ftp/tagless-final/course/lecture.pdf>
-Tagless final 1: <https://typelevel.org/blog/2018/06/27/optimizing-tagless-final-2.html>
-ZIO (John A De Goes): <https://skillsmatter.com/skillscasts/13247-scala-matters>
-ZIO: <https://zio.dev>
-Shapeless: <https://underscore.io/books/shapeless-guide>
-Type level computations: <http://slick.lightbend.com/talks/scalaio2014/Type-Level_Computations.pdf>
-Peano numbers: <https://wiki.haskell.org/Peano_numbers>
-Trampoline 0: <https://free.cofree.io/2017/08/24/trampoline>
-Trampoline 1: <https://medium.com/@olxc/trampolining-and-stack-safety-in-scala-d8e86474ddfa>
-Apache Spark: <https://spark.apache.org/docs/0.9.1/scala-programming-guide.html>
-Akka: <https://doc.akka.io/docs/akka/current/index-actors.html?language=scala>
+* Free monad 0: <https://typelevel.org/cats/datatypes/freemonad.html>
+* Free monad 1: <http://degoes.net/articles/modern-fp>
+* FreeK monad: <https://github.com/ProjectSeptemberInc/freek>
+* Recursion schemes: <https://free.cofree.io/2017/11/13/recursion>
+* Fix combinator: <https://free.cofree.io/2017/08/28/fixpoint>
+* Tagless final 0: <http://okmij.org/ftp/tagless-final/course/lecture.pdf>
+* Tagless final 1: <https://typelevel.org/blog/2018/06/27/optimizing-tagless-final-2.html>
+* ZIO (John A De Goes): <https://skillsmatter.com/skillscasts/13247-scala-matters>
+* ZIO: <https://zio.dev>
+* Shapeless: <https://underscore.io/books/shapeless-guide>
+* Type level computations: <http://slick.lightbend.com/talks/scalaio2014/Type-Level_Computations.pdf>
+* Peano numbers: <https://wiki.haskell.org/Peano_numbers>
+* Trampoline 0: <https://free.cofree.io/2017/08/24/trampoline>
+* Trampoline 1: <https://medium.com/@olxc/trampolining-and-stack-safety-in-scala-d8e86474ddfa>
+* Apache Spark: <https://spark.apache.org/docs/0.9.1/scala-programming-guide.html>
+* Akka: <https://doc.akka.io/docs/akka/current/index-actors.html?language=scala>
