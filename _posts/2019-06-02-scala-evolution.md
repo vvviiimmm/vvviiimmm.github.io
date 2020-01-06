@@ -10,6 +10,8 @@ tags:
 
 ## 17 different ways to calculate a factorial.
 
+![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/scala-evolution/header.png){: .align-center}
+
 Disclaimer: this article is a parody inspired by the [Haskell version](https://www.willamette.edu/~fruehr/haskell/evolution.html), please don’t take it too seriously. However, I believe that some examples actually have some value and can be used as a reference.
 
 ---
