@@ -397,7 +397,7 @@ Yay, finally we’re done. The real implementation that you might find in Cats i
 --- 
 
 ## Refereneces
-## 🤙🏼 More to come!
-Rúnar Bjarnason’s [Composable application architecture with reasonably priced monads](https://www.youtube.com/watch?v=M258zVn4m2M)
-Rob Norris’ [Programs as Values: JDBC Programming with Doobie](https://www.youtube.com/watch?v=M5MF6M7FHPo)
-John de Goes’ [Move Over Free Monads: Make Way for Free Applicatives!](https://www.youtube.com/watch?v=H28QqxO7Ihc)
+
+* Rúnar Bjarnason’s [Composable application architecture with reasonably priced monads](https://www.youtube.com/watch?v=M258zVn4m2M)
+* Rob Norris’ [Programs as Values: JDBC Programming with Doobie](https://www.youtube.com/watch?v=M5MF6M7FHPo)
+*John de Goes’ [Move Over Free Monads: Make Way for Free Applicatives!](https://www.youtube.com/watch?v=H28QqxO7Ihc)
