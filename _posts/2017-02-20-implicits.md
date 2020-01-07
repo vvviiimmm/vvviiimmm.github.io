@@ -9,6 +9,8 @@ tags:
   - scala
 ---
 
+## Use cases overview
+
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/implicits/header.png){: .align-center}
 
 Scala’s implicits have multiple applicable use cases which can serve different purposes. In this article we will go over some examples and try to understand how they can be useful. We will cover:

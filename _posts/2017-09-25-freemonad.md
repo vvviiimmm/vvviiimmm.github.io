@@ -8,6 +8,8 @@ tags:
   - scala
 ---
 
+## Building composable DSLs
+
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/freemonad/header.jpeg){: .align-center}
 
 ## 🤔 Free monad?

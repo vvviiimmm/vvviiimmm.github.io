@@ -9,6 +9,8 @@ tags:
   - scala
 ---
 
+## Polymorphism in FP languages
+
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/typeclasses/header.jpeg){: .align-center}
 
 Polymorphism is probably the most important feature in high level languages. It allows us to build programs according to interfaces, operate on abstractions and choose the right implementation based on types. Different languages implement it differently. Most OOP languages usually use inheritance and some kind of run time type dispatch or table lookup to get the right implementation. There is another way, which originally comes from Haskell which involves “**type classes**”. In this article we’ll go through the process of transforming traditional OOP style program into equivalent program with type classes in order to understand where the idea comes from.

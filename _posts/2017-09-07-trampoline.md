@@ -8,6 +8,8 @@ tags:
   - scala
 ---
 
+## Making every call a self recursive tail call
+
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/trampoline/header.png){: .align-center}
 
 ## Problem
