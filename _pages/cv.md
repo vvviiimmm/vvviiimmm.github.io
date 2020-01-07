@@ -85,6 +85,7 @@ Game development company. Worked mainly on a game engine and a level editor for 
 
 ## Education
 Kyiv National University of Technologies and Design 
+
 Computer Science, 2008 - 2012
 
 ---
