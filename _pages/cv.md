@@ -7,7 +7,7 @@ classes: wide
 
 ## About
 
-10 years of software engineering experience, a dozen of programming languages and quite a few technology stacks. Passioned about functional programming, Scala, Haskell, category theory, logic and everything in between. Spend most of my free time learning Mandarin and Spanish, hacking on things or just being outside more. I've been traveling full time and working remotely since March 2018, most likely I'm somewhere in Southeast Asia right now.
+10 years of software engineering experience, a dozen of programming languages and quite a few technology stacks. Passionate about functional programming, Scala, Haskell, category theory, logic and everything in between. Spend most of my free time learning Mandarin and Spanish, hacking on things or just being outside more. I've been traveling full time and working remotely since March 2018, most likely I'm somewhere in Southeast Asia right now.
 
 ---
 
