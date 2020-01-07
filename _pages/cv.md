@@ -5,19 +5,21 @@ title: "Oleksii Avramenko"
 classes: wide
 ---
 
-## Contacts
-
-email: [alexey.awramenko@gmail.com](mailto:alexey.awramenko@gmail.com)
-
-website: [vvviiimmm.github.io](https://vvviiimmm.github.io/)
-
-medium: [medium.com/@olxc](https://medium.com/@olxc)
-
-twitter: [twitter.com/vvviiimmm](https://twitter.com/vvviiimmm) 
-
 ## About
 
 10 years of software engineering experience, a dozen of programming languages and quite a few technology stacks. Passioned about functional programming, Scala, Haskell, category theory, logic and everything in between. Spend most of my free time learning Mandarin and Spanish, hacking on things or just being outside more. I've been traveling full time and working remotely since March 2018, most likely I'm somewhere in Southeast Asia right now.
+
+---
+
+## Contacts
+
+- email: [alexey.awramenko@gmail.com](mailto:alexey.awramenko@gmail.com)
+
+- website: [vvviiimmm.github.io](https://vvviiimmm.github.io/)
+
+- medium: [medium.com/@olxc](https://medium.com/@olxc)
+
+- twitter: [twitter.com/vvviiimmm](https://twitter.com/vvviiimmm) 
 
 ---
 

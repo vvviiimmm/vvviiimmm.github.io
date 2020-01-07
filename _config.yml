@@ -16,7 +16,7 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Scala, Haskell and all things FP"
+title                    : ":wq!"
 title_separator          : "-"
 name                     : "Oleksii Avramenko"
 description              : "An amazing website."
