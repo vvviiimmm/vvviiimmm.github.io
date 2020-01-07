@@ -9,6 +9,8 @@ tags:
   - functional programming
 ---
 
+## Folding data structures
+
 ![image-center]({{ site.url }}{{ site.baseurl }}/assets/images/posts/cata/header.png){: .align-center}
 
 > So I often hear the words “catamorphism” and “recursion schemes”. What is that about?
@@ -22,12 +24,14 @@ Catamorphisms (or **cata**) are generalizations of the concept of a fold in func
 The setup is not that straightforward so let’s start simple. Let’s say you have the following data structure to represent an expression:
 
 ```haskell
+-- haskell
 data Expression = Value Int 
     | Add Expression Expression
     | Mult Expression Expression deriving Show
 ```
 
 ```scala
+// scala
 sealed trait Expression
 
 case class Value(v: Int) extends Expression
@@ -38,11 +42,13 @@ case class Mult(l: Expression, e2: Expression) extends Expression
 And a simple expression can look like this:
 
 ```haskell
+-- haskell
 -- (1 + 2) * 3
 expr = Mult (Add (Value 1) (Value 2)) (Value 3)
 ```
 
 ```scala
+// scala
 // (1 + 2) * 3
 val expr = Mult(Add(Value(1), Value(2)), Value(3))
 ```
@@ -50,6 +56,7 @@ val expr = Mult(Add(Value(1), Value(2)), Value(3))
 Having just an expression data structure is useless, of course you’ll need a function to evaluate and get the result:
 
 ```haskell
+-- haskell
 evalExpr :: Expression -> Int
 evalExpr (Value v) = v
 evalExpr (Add e1 e2) = evalExpr e1 + evalExpr e2
@@ -57,6 +64,7 @@ evalExpr (Mult e1 e2) = evalExpr e1 * evalExpr e2
 ```
 
 ```scala
+// scala
 def evalExpr(expr: Expression): Int = expr match {
   case Value(v) => v
   case Add(e1, e2) => evalExpr(e1) + evalExpr(e2)
@@ -67,11 +75,13 @@ def evalExpr(expr: Expression): Int = expr match {
 This is where catamorphism generalization comes in:
 
 ```haskell
+-- haskell
 notReallyCata :: (Expression -> Int) -> Expression -> Int
 notReallyCata evaluator e = evaluator e -- purposly not Eta reducing
 ```
 
 ```scala
+// scala
 def notReallyCata(evaluator: (Expression) => Int, expr: Expression): Int = evaluator(expr)
 ```
 
@@ -82,6 +92,7 @@ That’s because it’s `notReallyCata`. The real `cata` function is generic and
 > Ok, then how the real cata looks like?
 
 ```haskell
+-- haskell
 type Algebra f a = f a -> a 
 newtype Mu f = InF { outF :: f (Mu f) } 
 cata :: Functor f => Algebra f a -> Mu f -> a 
@@ -94,12 +105,14 @@ cata f = f . fmap (cata f) . outF
 That’s why we started with `notReallyCata`. We’ll break down the implementation later until it clicks. But now let’s continue with our `Expression` example. First, we need to get rid of recursion by introducing a type parameter:
 
 ```haskell
+-- haskell
 data ExpressionF a = ValueF Int
     | AddF a a
     | MultF a a deriving Show
 ```
 
 ```scala
+// scala
 sealed trait ExpressionF[A]
 
 case class ValueF[A](v: Int) extends ExpressionF[A]
@@ -115,6 +128,7 @@ All references to `Expression` are replaced with `a` type parameter so the data 
 Glad you asked — that’s a hint that `ExpressionF` can be a `Functor`:
 
 ```haskell
+-- haskell
 instance Functor ExpressionF where
     fmap _ (ValueF a) = ValueF a
     fmap f (AddF e1 e2) = AddF (f e1) (f e2)
@@ -122,6 +136,7 @@ instance Functor ExpressionF where
 ```
 
 ```scala
+// scala
 import cats.Functor
 
 implicit object ExpressionFunctor extends Functor[ExpressionF] {
@@ -141,11 +156,13 @@ Nothing fancy, just applying some function to the wrapped value preserving stuct
 It doesn’t makes sense now but it will a bit later. Now, the way we create our expression haven’t changed (except for constructor names):
 
 ```haskell
+-- haskell
 expr =  Mult  (Add  (Value 1)  (Value 2))  (Value 3)
 exprF = MultF (AddF (ValueF 1) (ValueF 2)) (ValueF 3)
 ```
 
 ```scala
+// scala
 val expr  = Mult (Add (Value(1),  Value(2)),  Value(3))
 val exprF = MultF(AddF(ValueF(1), ValueF(2)), ValueF(3))
 ```
@@ -153,6 +170,7 @@ val exprF = MultF(AddF(ValueF(1), ValueF(2)), ValueF(3))
 But the resulting type is different:
 
 ```haskell
+-- haskell
 expr :: Expression
 expr =  Mult  (Add  (Value 1)  (Value 2))  (Value 3)
 
@@ -161,6 +179,7 @@ exprF = MultF (AddF (ValueF 1) (ValueF 2)) (ValueF 3)
 ```
 
 ```scala
+// scala
 val expr:  Expression                                 = Mult (Add (Value(1),  Value(2)),  Value(3))
 val exprF: ExpressionF[ExpressionF[ExpressionF[Int]]] = MultF(AddF(ValueF(1), ValueF(2)), ValueF(3))
 ```
@@ -168,6 +187,7 @@ val exprF: ExpressionF[ExpressionF[ExpressionF[Int]]] = MultF(AddF(ValueF(1), Va
 `expr` collapses everything into a single `Expression` while `exprF` encodes information about the nesting level of our expression tree. Speaking about evaluation, this is how we can go about implementing eval for `ExpressionF`:
 
 ```haskell
+-- haskell
 evalExprF :: ExpressionF Int -> Int
 evalExprF (ValueF v) = v
 evalExprF (AddF e1 e2) = e1 + e2
@@ -175,6 +195,7 @@ evalExprF (MultF e1 e2) = e1 * e2
 ```
 
 ```scala
+// scala
 def evalExprF(e: ExpressionF[Int]): Int = e match {
     case ValueF(v) => v
     case AddF(e1, e2) => e1 + e2
@@ -185,12 +206,14 @@ def evalExprF(e: ExpressionF[Int]): Int = e match {
 The main difference with original `evalExpr` is that we don’t have recursive call to `evalExprF` (`ExpressionF` is not recursive, remember?). It also means that our evaluator can work only with a **single level** expression:
 
 ```haskell
+-- haskell
 fourtyTwo = evalExprF (ValueF 42)
 five = evalExprF (AddF 2 3)
 six = evalExprF (MultF 2 3)
 ```
 
 ```scala
+// scala
 val fourtyTwo = evalExprF(ValueF(42))
 val five = evalExprF(AddF(2, 3))
 val six = evalExprF(MultF(2, 3))
@@ -199,12 +222,14 @@ val six = evalExprF(MultF(2, 3))
 And won’t compile on this:
 
 ```haskell
+-- haskell
 nestedExpr :: ExpressionF (ExpressionF Int)
 nestedExpr = AddF (ValueF 2) (ValueF 3)
 wontCompile = evalExprF nestedExpr
 ```
 
 ```scala
+// scala
 val nestedExpr: ExpressionF[ExpressionF[Int]] = AddF(ValueF(2), ValueF(3))
 val wontCompile = evalExprF(nestedExpr)
 ```
@@ -214,6 +239,7 @@ Simply because `exprF` expepects `ExpressionF` Int and we’re shoving `Expressi
 To make it work we could define another evaluator:
 
 ```haskell
+-- haskell
 -- Single level
 evalExprF :: ExpressionF Int -> Int
 evalExprF (ValueF v) = v
@@ -227,6 +253,7 @@ evalExprF2 (MultF e1 e2) = evalExprF e1 * evalExprF e2
 ```
 
 ```scala
+// scala
 // Single level
 def evalExprF(e: ExpressionF[Int]): Int = e match {
   case ValueF(v) => v
@@ -250,6 +277,7 @@ Yes, for arbitrary nested expression this approach is not scalable — each addi
 There is a way to generalize this nesting with a new type:
 
 ```haskell
+-- haskell
 newtype Fix f = Fx (f (Fix f))
 
 unfix :: Fix f -> f (Fix f)
@@ -257,6 +285,7 @@ unfix (Fx x) = x
 ```
 
 ```scala
+// scala
 final case class Fix[F[_]](unFix: F[Fix[F]])
 ```
 
@@ -270,6 +299,7 @@ The type signature is confusing to read at first because of type constructor can
 Now, we will replace every `ExpressionF` of our expression tree with `Fix ExpressionF`. Notice the difference in constructing expressions with and without `Fx` — they’re basically the same, except we need to prepend `Fx $`:
 
 ```haskell
+-- haskell
 -- (1 + 2) * (3 + 4)
 regularExprF :: ExpressionF (ExpressionF (ExpressionF a))
 regularExprF = MultF (AddF (ValueF 1) (ValueF 2)) (AddF (ValueF 3) (ValueF 4))
@@ -279,6 +309,7 @@ fixedExprF   = Fx $ MultF (Fx $ AddF (Fx $ ValueF 1) (Fx $ ValueF 2)) (Fx $ AddF
 ```
 
 ```scala
+// scala
 val regularExprF: ExpressionF[ExpressionF[ExpressionF[Int]]] =
   MultF(
     AddF(
@@ -308,28 +339,33 @@ Yes, but we’re trying to generalize the process of folding, it requires introd
 So we have our ‘fixed’ data structure, how would evaluation function look like?
 
 ```haskell
+-- haskell
 evalFixedExprF :: Fix ExpressionF -> Int
 evalFixedExprF fixedExpr = ???
 ```
 
 ```scala
+// scala
 def evalFixedExprF(e: Fix[ExpressionF]): Int = ???
 ```
 
 Given a `Fix ExpressionF` the only thing we can do with it is calling `unfix` which produces `ExpressionF (Fix ExpressionF)`:
 
 ```haskell
+-- haskell
 evalFixedExprF :: Fix ExpressionF -> Int
 evalFixedExprF fixedExpr = unfix fixedExpr ?? and something
 ```
 
 ```scala
+// scala
 def evalFixedExprF(e: Fix[ExpressionF]): Int = e.unFix ???
 ```
 
 The returned `ExpressionF` can be one of our `ValueF`, `AddF` or `MultF` having a `Fix ExpressionF` as their type parameter. It makes sense to do pattern matching and decide what to do next:
 
 ```haskell
+-- haskell
 evalFixedExprF :: Fix ExpressionF -> Int
 evalFixedExprF fixedExpr = case unfix fixedExpr of
     ValueF i -> i
@@ -344,6 +380,7 @@ evalExpr (Mult e1 e2) = evalExpr e1 * evalExpr e2
 ```
 
 ```scala
+// scala
 def evalFixedExprF(e: Fix[ExpressionF]): Int = e.unFix match {
     case ValueF(v) => v
     case AddF(e1, e2) => evalFixedExprF(e1) + evalFixedExprF(e2)
@@ -363,22 +400,26 @@ Yes, it looks the same as our very first recursive evaluator for `Expression` wi
 Here’s the key: we will re-use our original ‘fix-less’ evaluator for `ExpressionF` and somehow distribute it over the `Fix ExpressionF` stucture. So this should be a function taking two arguments — the evaluator and the structure to evaluate:
 
 ```haskell
+-- haskell
 almostCata :: (ExpressionF Int -> Int) -> Fix ExpressionF -> Int
 almostCata evaluator expr = undefined
 ```
 
 ```scala
+// scala
 def almostCata(evaluator: (ExpressionF[Int] => Int), e: Fix[ExpressionF]): Int = ???
 ```
 
 Let’s try figure out the implementation — the first logical thing to do is to use `unfix` to get `ExpressionF` and then maybe pass it to `evaluator`:
 
 ```haskell
+-- haskell
 almostCata :: (ExpressionF Int -> Int) -> Fix ExpressionF -> Int
 almostCata evaluator expr = evaluator $ unfix expr -- won't compile
 ```
 
 ```scala
+// scala
 def almostCata(evaluator: (ExpressionF[Int] => Int), e: Fix[ExpressionF]): Int = 
   evaluator(e.unFix) // won't compile
 ```
@@ -386,11 +427,13 @@ def almostCata(evaluator: (ExpressionF[Int] => Int), e: Fix[ExpressionF]): Int =
 Obviously this doesn’t work, `evaluator` expects `ExpressionF Int` and not `ExpressionF (Fix ExpressionF)`. By the way, remember that `ExpressionF` is a `Functor`? This is where it gets handy — we can use `fmap` to apply the same process to the inner level of our expression tree:
 
 ```haskell
+-- haskell
 almostCata :: (ExpressionF Int -> Int) -> Fix ExpressionF -> Int
 almostCata evaluator expr = evaluator $ fmap (almostCata evaluator) (unfix expr)
 ```
 
 ```scala
+// scala
 def almostCata(evaluator: (ExpressionF[Int] => Int))(e: Fix[ExpressionF]): Int =
    evaluator(Functor[ExpressionF].map(e.unFix)(almostCata(evaluator)))
 ```
@@ -400,11 +443,13 @@ Take a moment and think about what happens: we’re passing a recursive function
 By looking at `almostCata` we can see that it doesn’t really have anything specific to `ExpressionF` or `Int` type and theoretically can be generalized with some type parameter `f`. The only constraint should be having a `Functor` instance for `f`, because we’re using `fmap`:
 
 ```haskell
+-- haskell
 cata :: Functor f => (f a -> a) -> Fix f -> a
 cata alg expr = alg $ fmap (cata alg) (unfix expr)
 ```
 
 ```scala
+// scala
 def cata[F[_], A](alg: (F[A] => A))(e: Fix[F])(implicit F: Functor[F]): A =
   alg(F.map(e.unFix)(cata(alg)))
 ```
@@ -412,6 +457,7 @@ def cata[F[_], A](alg: (F[A] => A))(e: Fix[F])(implicit F: Functor[F]): A =
 And that’s the final version of `cata`. Here’s the full implementation with some usage examples:
 
 ```haskell
+-- haskell
 -- Non recursive data structure
 data ExpressionF a = ValueF Int
     | AddF a a
@@ -444,6 +490,7 @@ twentyOne = cata evalExprF someExpression
 ```
 
 ```scala
+// scala
 // Non recursive data structure
 sealed trait ExpressionF[A]
 
@@ -493,6 +540,7 @@ A lot of concepts in category theory and functional programming are pretty abstr
 By the way, by generalizing our `ExpressionF -> Int` function to `Functor f => (f a -> a)` we discovered another important concept called **F-Algebra**. Basically F-Algebra is a triple of functor `f`, some type `a` and evaluator function `f a -> a`. Note that `a` here not polymorphic — it has to be a concrete type, like `Int` or `Bool` and it’s called a **carrier type**. For any endo-functor `f` you can create multiple F-Algebra’s based on it. Take our expressions example — endo-functor `f` is `ExpressionF`, a is `Int` and evaluator is `evalExprF`. But we can change the carrier type and produce more algebras:
 
 ```haskell
+-- haskell
 type Algebra f a = f a -> a
 
 algebra0 :: Algebra ExpressionF Int -- or ExpressionF Int -> Int
@@ -512,6 +560,7 @@ algebra2 (MultF e1 e2) = e1 && e2
 ```
 
 ```scala
+// scala
 type Algebra[F[_], A] = F[A] => A
 
 val algebra0: Algebra[ExpressionF, Int] = {
@@ -539,6 +588,7 @@ val algebra2: Algebra[ExpressionF, Boolean] = {
 Yes, we’re picking different carrier types and choosing our implementation. But there the trick — there is a mother of all evaluators that we can create by picking our carrier type to be… `Fix ExprF`.
 
 ```haskell
+-- haskell
 -- just in case:
 newtype Fix f = Fx (f (Fix f))
 
@@ -547,6 +597,7 @@ initialAlgebra = ?
 ```
 
 ```scala
+// scala
 // just in case
 final case class Fix[F[_]](unFix: F[Fix[F]])
 
@@ -559,11 +610,13 @@ val initialAlgebra: Algebra[ExpressionF, Fix[ExpressionF]] = ???
 Of course you won’t write something like that yourself, just want to show you the deeper meaning behind f-algebras and cata. In fact, we already have an implementation for such evaluator and thats exactly `Fx` constructor:
 
 ```haskell
+-- haskell
 initialAlgebra :: ExpressionF (Fix ExpressionF) -> Fix ExpressionF
 initialAlgebra = Fx
 ```
 
 ```scala
+// scala
 val initialAlgebra: Algebra[ExpressionF, Fix[ExpressionF]] = Fix[ExpressionF]
 ```
 
