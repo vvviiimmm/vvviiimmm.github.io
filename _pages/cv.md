@@ -5,7 +5,7 @@ title: "Oleksii Avramenko"
 classes: wide
 ---
 
-###### [pdf version]({{ site.url }}{{ site.baseurl }}/assets/files/oleksii-avramenko.pdf)
+###### [(pdf version)]({{ site.url }}{{ site.baseurl }}/assets/files/oleksii-avramenko.pdf)
 
 ## About
 
