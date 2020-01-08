@@ -43,6 +43,7 @@ $(document).ready(function() {
   $(".author__urls-wrapper button").on("click", function() {
     $(".author__urls").toggleClass("is--visible");
     $(".author__urls-wrapper button").toggleClass("open");
+    console.log("Hello?")
   });
 
   // Close search screen with Esc key
