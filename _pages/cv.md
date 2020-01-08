@@ -15,9 +15,9 @@ classes: wide
 
 - email: [alexey.awramenko@gmail.com](mailto:alexey.awramenko@gmail.com)
 
-- medium: [medium.com/@olxc](https://medium.com/@olxc)
-
 - twitter: [twitter.com/vvviiimmm](https://twitter.com/vvviiimmm) 
+
+- medium: [medium.com/@olxc](https://medium.com/@olxc)
 
 - website: [vvviiimmm.github.io](https://vvviiimmm.github.io/)
 
@@ -68,7 +68,7 @@ PL: Mostly C++
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} C++/C# Developer at [Playtech](https://www.playtech.com), Videobet
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/playtechlogo.jpg){: .align-right} C++/C# Developer at [Playtech](https://www.playtech.com), Videobet
 
 _September 2013 - July 2014_
 
