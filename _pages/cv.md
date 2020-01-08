@@ -24,7 +24,7 @@ classes: wide
 ---
 
 ## Work experience
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Team/Tech Leader at Sisense Inc.
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png)(https://www.sisense.com){: .align-right} Team/Tech Leader at Sisense Inc.
 
 _December 2016 - Present_
 
