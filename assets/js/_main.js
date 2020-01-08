@@ -29,11 +29,11 @@ $(document).ready(function() {
       // $(".sidebar").addClass("sticky");
     } else {
       // unfix
-      $(".sidebar").removeClass("sticky");
+      // $(".sidebar").removeClass("sticky");
     }
   };
 
-  // stickySideBar();
+  stickySideBar();
 
   $(window).resize(function() {
     // stickySideBar();
