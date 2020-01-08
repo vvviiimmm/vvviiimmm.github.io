@@ -30,17 +30,21 @@ _December 2016 - Present_
 
 As a "Data Connectors" team we're working on providing connectivity to different data sources, normalizing the schema and extracting data for analytical purposes; targeting a wide range of data sources, like relational databases (MSSQL, MySQL, Postgres, etc), file based (CSV, Excel files), analytical databases and warehouses (Redshift, Google BigQuery, Snowflake), web services and social networks (Facebook, Twitter, Stripe, Hubspot, etc)and many more. We're using Scala for all of our projects with a high emphasis on functional programming. Doing my best to mentor newcomers and educate other people about the benefits of FP.
 
+PL: Mostly Scala, a bit of Java and C#, targeting Windows and Linux with Kubernetes orchestration.
+
 ---
 
-### Scala Developer at [Sisense Inc.](https://www.sisense.com)
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Scala Developer at [Sisense Inc.](https://www.sisense.com)
 
 _December 2015 - December 2016_
 
 Started as a team of 2 people our goal was to design and implement an infrastructure for connecting to various data sources and bring data into our own data warehouse. The new framework design had to support multiple run time environment and we end up having implementation on JVM using Scala (the one I was leading) and .NET using C#. I was also focused on developing easy to use and well documented SDK for connectors development for the Sisense community.
 
+PL: Scala and C#
+
 ---
 
-### Senior C++ Developer at Teramind Inc.
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.png){: .align-right} Senior C++ Developer at Teramind Inc.
 
 _August 2015 - November 2015_
 
@@ -50,21 +54,27 @@ Startup company specializing in website and application monitoring, file trackin
 
 - Filter network tcp/udp packets. Receive, decode and parse application layer protocols like http, smtp, pop3, tls/ssl etc and eventually make a decision based on packet's content.
 
+PL: C++ for application code and C for kernel extensions, targeting OS X
+
 ---
 
-### C++ Developer at Playtech, Poker
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/playtechlogo.png){: .align-right} C++ Developer at Playtech, Poker
 
 _July 2014 - August 2015_
 
 Playtech's Poker department develops online poker platform. I was responsible for unifying multiple (platform dependent) code bases under one solution that would simplify app's development, deployment and maintenance. That involved porting existing functionality from iOS to Windows and Mac and vise versa. There were a lot of technical challenges that required deep knowledge in various low level components and compilers.
 
+PL: Mostly C++
+
 ---
 
-### C++/C# Developer at Playtech, Videobet
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.png){: .align-right} C++/C# Developer at Playtech, Videobet
 
 _September 2013 - July 2014_
 
-Videobet works on gaming terminals platform and casino management system. I was mainly focused on creating new tools for game development and testing automation. Designed and implemented a tool which, hosted on physical terminal, allows remote and automated comprehensive testing of all platform functionality.
+Videobet works on gaming terminals platform and casino management system. I was mainly focused on tooling, testing automation and infrastructure. Worked on a set of tools which, hosted on physical terminal, allow remote and automated comprehensive testing of all platform's functionality.
+
+PL: C++ and C# targeting Windows Embedded
 
 ---
 
@@ -74,12 +84,16 @@ _January 2011 - September 2013_
 
 Game development company. Participated in development of more than 20 shipped games, including three of them as a lead programmer. Had chance to do all kinds of work — developing engine internals, mentoring junior developers, drawing art, creating animations and sounds.
 
+PL: Lua, C++ and Python
+
 ---
 
 ### C++ Developer at AeroHills
 
 _July 2010 - December 2010_
-Game development company. Worked mainly on a game engine and a level editor for casual games.
+Game development company. Worked mainly on a game engine and a level editor.
+
+PL: C++ and Python
 
 ---
 
