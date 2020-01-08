@@ -24,17 +24,17 @@ classes: wide
 ---
 
 ## Work experience
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Team/Tech Leader at [Sisense Inc](https://www.sisense.com).
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.jpg){: .align-right} Team/Tech Leader at [Sisense Inc](https://www.sisense.com).
 
 _December 2016 - Present_
 
-As a "Data Connectors" team we're working on providing connectivity to different data sources, normalizing the schema and extracting data for analytical purposes; targeting a wide range of data sources, like relational databases (MSSQL, MySQL, Postgres, etc), file based (CSV, Excel files), analytical databases and warehouses (Redshift, Google BigQuery, Snowflake), web services and social networks (Facebook, Twitter, Stripe, Hubspot, etc)and many more. We're using Scala for all of our projects with a high emphasis on functional programming. Doing my best to mentor newcomers and educate other people about the benefits of FP.
+As a "Data Connectors" team we're working on providing connectivity to different data sources, normalizing the schema and extracting data for analytical purposes; targeting a wide range of data sources, like relational databases (MSSQL, MySQL, Postgres, etc), file based (CSV, Excel files), analytical databases and warehouses (Redshift, Google BigQuery, Snowflake), web services and social networks (Facebook, Twitter, Stripe, Hubspot, etc) and many more. We're using Scala for all of our projects with a high emphasis on functional programming. Doing my best to mentor newcomers and educate other people about the benefits of FP.
 
 PL: Mostly Scala, a bit of Java and C#, targeting Windows and Linux with Kubernetes orchestration.
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Scala Developer at [Sisense Inc](https://www.sisense.com).
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.jpg){: .align-right} Scala Developer at [Sisense Inc](https://www.sisense.com).
 
 _December 2015 - December 2016_
 
