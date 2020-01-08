@@ -44,7 +44,7 @@ PL: Scala and C#
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.png){: .align-right} Senior C++ Developer at Teramind Inc.
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} Senior C++ Developer at Teramind Inc.
 
 _August 2015 - November 2015_
 
@@ -58,7 +58,7 @@ PL: C++ for application code and C for kernel extensions, targeting OS X
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/playtechlogo.png){: .align-right} C++ Developer at Playtech, Poker
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/playtechlogo.jpg){: .align-right} C++ Developer at Playtech, Poker
 
 _July 2014 - August 2015_
 
@@ -68,7 +68,7 @@ PL: Mostly C++
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.png){: .align-right} C++/C# Developer at Playtech, Videobet
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} C++/C# Developer at Playtech, Videobet
 
 _September 2013 - July 2014_
 
