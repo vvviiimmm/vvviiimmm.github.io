@@ -24,7 +24,7 @@ classes: wide
 ---
 
 ## Work experience
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Team/Tech Leader at [Sisense Inc.](https://www.sisense.com)
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Team/Tech Leader at [Sisense Inc](https://www.sisense.com).
 
 _December 2016 - Present_
 
@@ -34,7 +34,7 @@ PL: Mostly Scala, a bit of Java and C#, targeting Windows and Linux with Kuberne
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Scala Developer at [Sisense Inc.](https://www.sisense.com)
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Scala Developer at [Sisense Inc](https://www.sisense.com).
 
 _December 2015 - December 2016_
 
@@ -44,7 +44,7 @@ PL: Scala and C#
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} Senior C++ Developer at Teramind Inc.
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} Senior C++ Developer at [Teramind Inc](https://www.teramind.co).
 
 _August 2015 - November 2015_
 
@@ -58,7 +58,7 @@ PL: C++ for application code and C for kernel extensions, targeting OS X
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/playtechlogo.jpg){: .align-right} C++ Developer at Playtech, Poker
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/playtechlogo.jpg){: .align-right} C++ Developer at [Playtech](https://www.playtech.com), Poker
 
 _July 2014 - August 2015_
 
@@ -68,7 +68,7 @@ PL: Mostly C++
 
 ---
 
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} C++/C# Developer at Playtech, Videobet
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/teramindlogo.jpg){: .align-right} C++/C# Developer at [Playtech](https://www.playtech.com), Videobet
 
 _September 2013 - July 2014_
 
