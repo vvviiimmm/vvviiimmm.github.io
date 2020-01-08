@@ -24,7 +24,7 @@ classes: wide
 ---
 
 ## Work experience
-### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png)(https://www.sisense.com){: .align-right} Team/Tech Leader at Sisense Inc.
+### ![image-right]({{ site.url }}{{ site.baseurl }}/assets/images/common/sisenselogo.png){: .align-right} Team/Tech Leader at [Sisense Inc.](https://www.sisense.com)
 
 _December 2016 - Present_
 
@@ -32,7 +32,7 @@ As a "Data Connectors" team we're working on providing connectivity to different
 
 ---
 
-### Scala Developer at Sisense Inc.
+### Scala Developer at [Sisense Inc.](https://www.sisense.com)
 
 _December 2015 - December 2016_
 
