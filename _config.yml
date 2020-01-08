@@ -18,6 +18,7 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 locale                   : "en-US"
 title                    : ":wq!"
 title_separator          : "-"
+# subtitle                 : ""
 name                     : "Oleksii Avramenko"
 description              : "An amazing website."
 url                      : "https://vvviiimmm.github.io"
@@ -83,21 +84,22 @@ naver_site_verification  :
 
 # Social Sharing
 twitter:
-  username               : "vvviiimmm"
+  username               : &twitter "vvviiimmm"
 og_image                 : # Open Graph/Twitter default site image
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
 social:
   type                   : # Person or Organization (defaults to Person)
   name                   : # If the user or organization name differs from the site's name
-  links: # An array of links to social media profiles
+  links:
+    - https://twitter.com/vvviiimmm
 
 # Analytics
 analytics:
-  provider               : false # false (default), "google", "google-universal", "custom"
+  provider               : "google-universal" # false (default), "google", "google-universal", "custom"
   google:
-    tracking_id          :
-    anonymize_ip         : # true, false (default)
+    tracking_id          : "UA-155759980-1"
+    anonymize_ip         : true
 
 
 # Site Author
@@ -125,7 +127,7 @@ footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      # url:
+      url: "https://twitter.com/vvviiimmm"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
       # url:
