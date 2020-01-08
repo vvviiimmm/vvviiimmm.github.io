@@ -15,11 +15,11 @@ classes: wide
 
 - email: [alexey.awramenko@gmail.com](mailto:alexey.awramenko@gmail.com)
 
-- website: [vvviiimmm.github.io](https://vvviiimmm.github.io/)
-
 - medium: [medium.com/@olxc](https://medium.com/@olxc)
 
 - twitter: [twitter.com/vvviiimmm](https://twitter.com/vvviiimmm) 
+
+- website: [vvviiimmm.github.io](https://vvviiimmm.github.io/)
 
 ---
 
