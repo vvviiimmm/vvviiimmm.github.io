@@ -223,7 +223,7 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jemoji
-  # - jekyll-include-cache
+  - jekyll-include-cache
   - jekyll-jupyter-notebooksz
 
 # mimic GitHub Pages with --safe
@@ -233,7 +233,7 @@ whitelist:
   - jekyll-gist
   - jekyll-feed
   - jemoji
-  # - jekyll-include-cache
+  - jekyll-include-cache
   - jekyll-jupyter-notebook
 
 links:
