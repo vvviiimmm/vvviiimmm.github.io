@@ -1,8 +1,6 @@
 ---
 title: "Jekyll + JNotebooks"
 classes: wide
-categories:
-  - python
 ---
 
 ## Blog title
