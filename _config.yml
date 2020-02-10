@@ -224,7 +224,7 @@ plugins:
   - jekyll-feed
   - jemoji
   - jekyll-include-cache
-  - jekyll-jupyter-notebook
+  - jekyll-jupyter-notebooksz
 
 # mimic GitHub Pages with --safe
 whitelist:
