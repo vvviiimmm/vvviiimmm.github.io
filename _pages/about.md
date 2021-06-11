@@ -5,7 +5,7 @@ title: "About"
 author_profile: true
 ---
 
-Hola,
+Greetings fellow internet users,
 
 This site is mostly about functional programming and software engineering. Occasionally thoughts on foreign language learning or any other thing I'll be into. 
 
