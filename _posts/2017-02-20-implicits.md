@@ -7,6 +7,7 @@ tags:
   - implicits
   - functional programming
   - scala
+date: 2018-11-27
 ---
 
 ## Use cases overview
